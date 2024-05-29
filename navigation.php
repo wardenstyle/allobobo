@@ -43,11 +43,11 @@ if (session_status() === PHP_SESSION_NONE) {
                 ?><a class="nav-link" href="connexion.php">se connecter</a>
                 <?php } ?>
               </li>
-              <form class="form-inline">
+              <!-- <form class="form-inline">
                 <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
                   <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
-              </form>
+              </form> -->
             </ul>
           </div>
         </nav>
