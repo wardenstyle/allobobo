@@ -83,11 +83,13 @@ if(isset($_SESSION['email_user']) == 'admin@allobobo.fr'){
     padding: 0;
     font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
     font-size: 14px;
+    
   }
 
   #calendar {
     max-width: 1100px;
     margin: 0 auto;
+    background-color:white;
   }
 
 </style>
@@ -117,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'listDay,listWeek'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
       },
 
       // customize the button names,
@@ -128,11 +130,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
       },
 
-      initialView: 'listWeek',
-      initialDate: '2023-01-12',
+      initialDate: '2024-05-16',
       navLinks: true, // can click day/week names to navigate views
+      businessHours: true, // display business hours
       editable: true,
-      dayMaxEvents: true, // allow "more" link when too many events
+      selectable: true,
       events: result
   
     });
