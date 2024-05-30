@@ -48,48 +48,47 @@ if(isset($_POST['submit'])) {
 
     <?php include('header.php') ?>
 	<style>
-		h4{color:white;font-family:'Roboto';}	
+		h4{color:white;font-family:'Roboto';}
+		.erreur_text{color:white;font-family:'Roboto';}
 	</style>
 
 	<body>
 		<div class="hero_area">
-			<div class="hero_bg_box">
-				<img src="images/hero-bg-sas.png" alt="">
-			</div>
-		    <!-- navigation section -->
-			<?php include('navigation.php') ?>
-   		 	<!-- navigation section -->
 
-			<?php if(isset($erreur_nom)) echo '<p class="erreur_text">' .$erreur_nom.'</p>'; ?>
-			<br />
-			<br />
-			<br />
-			<?php if(isset($erreur)) echo '<p class="erreur_text">' .$erreur.'</p>'; ?>
-			<div class="container-fluid">
-				<center>
-				<form method="post" action="connexion.php" class="form-horizontal col-md-6 col-md-offset-3 col-xs-offset-2 col-xs-8" style="width:50%;border: solid;color:white;padding:10px;">
-					<br />			
-						<label id="label_mail" class="col-md-offset-1 col-md-3" for="email" style="color:white;font-family:Roboto"> Adresse mail: </label>
-						<input type="email" name="email_user" placeholder="admin : admin@allobobo.fr" id="email" size="40px"  value="<?php if(isset($email_user))echo $email_user; ?>"><br />
-						<br />			
-						<label id="label_mdp" for="password" class="col-md-offset-1 col-md-3" style="color:white;font-family:Roboto"> Mot de passe : </label>
-						<input type="password" placeholder="mot de passe : admin" name="mdp"  id="mdp" size="40px"  /><br />
-						<br />
-						<button class="btn btn-outline-dark" id="reserver" style="color:white" type="submit" name="submit"size="">Se connecter</button>						
-				</form>
-				<br />
-					<h4>Vous n'avez pas de compte ? <a class="btn btn-dark" href="inscription.php"> s'inscrire</a></h4>
-				</center>
-				
-				<style>.erreur_text{color:white;font-family:'Roboto';}</style>
-					
-				<br />
-				<center>
-				<?php if(isset($erreur_pass)) echo '<p class="erreur_text">' .$erreur_pass.'</p>'; ?>
-				<?php if(isset($erreur_mdp)) echo '<p class="erreur_text">' .$erreur_mdp.'</p>'; ?>
-				<?php if(isset($erreur1)) echo '<p class="erreur_text">' .$erreur1.'</p>'; ?>
-				<center>
-			</div>
+					<div class="hero_bg_box">
+						<img src="images/hero-bg-sas.png" alt="">
+					</div>
+					<!-- navigation section -->
+					<?php include('navigation.php') ?>
+					<!-- navigation section -->
+
+				<div class="container mt-5">
+        			<div class="row justify-content-center">
+						<div class="col-md-6">
+							<form method="post" action="connexion.php" class="" style="border: solid;color:white;padding:10px;">
+								<div class="form-group">
+									<label id="label_mail" for="email" style="color:white;font-family:Roboto"> Adresse mail: </label>
+									<input type="email" name="email_user" class="form-control" placeholder="admin : admin@allobobo.fr" id="email"   value="<?php if(isset($email_user))echo $email_user; ?>"><br />
+								</div>
+
+								<div class="form-group">
+									<label id="label_mdp" for="password" style="color:white;font-family:Roboto"> Mot de passe : </label>
+									<input type="password" class="form-control "placeholder="mot de passe : admin" name="mdp"  id="mdp"   /><br />
+								</div>
+									<button class="btn btn-outline-dark" style="color:white" type="submit" name="submit">Se connecter</button>						
+							</form>
+							<br />
+								<h4>Vous n'avez pas de compte ? <a class="btn btn-dark" href="inscription.php"> s'inscrire</a></h4>
+								
+							<br />
+
+							<?php if(isset($erreur_pass)) echo '<p class="erreur_text">' .$erreur_pass.'</p>'; ?>
+							<?php if(isset($erreur_mdp)) echo '<p class="erreur_text">' .$erreur_mdp.'</p>'; ?>
+							<?php if(isset($erreur1)) echo '<p class="erreur_text">' .$erreur1.'</p>'; ?>
+						</div>
+					</div>
+				</div>
 		</div>
 	</body>
+
 				
