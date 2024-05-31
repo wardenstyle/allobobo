@@ -50,6 +50,12 @@ if(isset($_POST['submit'])) {
 	<style>
 		h4{color:white;font-family:'Roboto';}
 		.erreur_text{color:white;font-family:'Roboto';}
+		#form{
+				display: flex;
+    			flex-direction: column;
+    			align-items: start;
+				border: solid;color:white;padding:10px;text-align:justify;		
+			}
 	</style>
 
 	<body>

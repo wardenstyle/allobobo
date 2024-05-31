@@ -73,79 +73,93 @@ if(isset($_POST['submit'])){
 <html>
 	<?php include('header.php') ?>
 
-		<style>
+	<style>
+        h3 {
+            color: white;
+            font-family: 'Roboto';
+        }
+        table {
+            color: white;
+        }
+        .erreur_text {
+            color: white;
+            font-family: 'Roboto';
+        }
+        #form {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            border: solid;
+            color: white;
+            padding: 10px;
+            text-align: justify;
+        }
+        .custom-width {
+            width: 150%;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero_area">
+        <div class="hero_bg_box">
+            <img src="images/hero-bg.png" alt="">
+        </div>
 
-			h3{color:white;font-family:'Roboto';}
-			table{ color:white;}
-			#form{
-				display: flex;
-    			flex-direction: column;
-    			align-items: start;
-    			
-				border: solid;color:white;padding:10px;text-align:justify;
-			}
+        <!-- navigation section  -->
+        <?php include('navigation.php') ?>
+        <!-- navigation section -->
 
-		</style>
-	<body>
-		<div class="container-fluid">
-			<div class="hero_area">
+        <?php if ((isset($validation)) && ($validation == true)) { ?>
+            <center>
+                <h3>Votre compte a été créé !</h3><br/>
+                <a class="btn btn-primary" href="connexion.php" id="lien_retour">Se connecter</a>
+            </center>
+        <?php } else { ?> 
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form id="form" method="post" action="inscription.php">
+                            <div class="form-group">
+                                <label for="nom" style="color:white; font-weight:bold">Nom:</label>
+                                <input type="text" name="nom" class="form-control custom-width" id="nom" value="<?php if (isset($nom)) echo $nom; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="email" style="color:white; font-weight:bold">Adresse mail:</label>
+                                <input type="email" name="email" id="email" class="form-control custom-width" value="<?php if (isset($email)) echo $email; ?>" onchange="verifier_email()" onkeyup="verifier_email()">
+                                <div id="resultat" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" style="color:white; font-weight:bold">Mot de passe:</label>
+                                <input type="password" name="password" id="password" class="form-control custom-width" value="<?php if (isset($password)) echo $password; ?>" onchange="verifier_mdp()" onkeyup="verifier_mdp()">
+                            </div>
+                            <div class="form-group">
+                                <label for="repeatpassword" style="color:white; font-weight:bold">Confirmation mot de passe:</label>
+                                <input type="password" name="repeatpassword" id="repeatpassword" class="form-control custom-width" value="<?php if (isset($password)) echo $password; ?>" onchange="verifier_mdp()" onkeyup="verifier_mdp()">
+                                <div id="resultat2" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div>
+                            </div>
+                            <input id="reserver" type="submit" class="btn btn-primary" name="submit" value="Validez">
+                        </form>
 
-				<div class="hero_bg_box">
-					<img src="images/hero-bg.png" alt="">
-				</div>
+                        <?php 
+                            if (isset($erreur_pass)) echo '<p class="erreur_text">' . $erreur_pass . '</p>';
+                            if (isset($erreur_nom)) echo '<p class="erreur_text">' . $erreur_nom . '</p>';
+                            if (isset($erreur_email)) echo '<p class="erreur_text">' . $erreur_email . '</p>';
+                            if (isset($erreur_repeat)) echo '<p class="erreur_text">' . $erreur_repeat . '</p>';
+                            if (isset($erreur)) echo '<p class="erreur_text">' . $erreur . '</p>'; 
+                        ?>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
 
-				<!-- navigation section  -->
-				<?php include('navigation.php') ?>
-				<!-- navigation section -->
+    <!-- Lien vers le JS de Bootstrap et ses dépendances -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
 
-				<?php if((isset($validation)) && ($validation == true)){ ?>
-				<center>
-				<h3>Votre compte à été créé !   </h3><br/>
-				<a class="btn btn-primary" href="connexion.php" id="lien_retour">Se connecter</a>
-				</center>
-				<?php }else{ ?> 
-			<center>							
-			<section>
-				<br />								
-				<br />
-				<form id="form" method="post" action="inscription.php" class="form-horizontal col-md-6 col-md-offset-3 col-xs-offset-2 col-xs-8" style="">
-					<label for="nom" style="color:white; font-weight:bold">Nom:</label>
-					<input type="text" name="nom" id="nom" size="40px" value="<?php if(isset($nom))echo $nom; ?>"><br/>
-					<br /><!-- si la personne s'est trompé cela permet de garder son nom rempli-->									
-					<label for="email" style="color:white; font-weight:bold"> Adresse mail: </label>
-					<input  type="email" name="email" id="email" size="40px" 
-					value="<?php if(isset($email))echo $email; ?>" onchange="verifier_email()" onkeyup="verifier_email()" ><div id="resultat" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div><br />
-					<br />									
-					<label for="password" style="color:white; font-weight:bold;"> Mot de passe : </label>
-					<input  type="password" name="password"  id="password" size="40px"  
-					onchange="verifier_mdp()" onkeyup="verifier_mdp()"/><br />
-					<br />
-					<label for="repeatpassword" style="color:white; font-weight:bold"> Confirmation mot de passe : </label>
-					<input type="password" name="repeatpassword"  id="repeatpassword" size="40px"
-					onchange="verifier_mdp()" onkeyup="verifier_mdp()" />
-					<br />
-					<br/>
-					<div id="resultat2" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div>
-					<br/>
-					<input id="reserver" type="submit" class="btn btn-primary" name="submit" value="Validez" size="40px">
-				</form>
-
-				<?php }?>
-
-			</section>
-				<?php 
-					if(isset($erreur_pass)) echo '<p class="erreur_text">' .$erreur_pass.'</p>';
-					if(isset($erreur_nom)) echo '<p class="erreur_text">' .$erreur_nom.'</p>';
-					if(isset($erreur_email)) echo '<p class="erreur_text">' .$erreur_email.'</p>';
-					if(isset($erreur_repeat)) echo '<p class="erreur_text">' .$erreur_repeat.'</p>';
-					if(isset($erreur)) echo '<p class="erreur_text">' .$erreur.'</p>'; 
-				?>
-				</center>
-			<style>.erreur_text{color:white;font-family:'Roboto';}</style>
-			<script type="text/javascript" src="monajax.js"></script>
-
-		</div>
-	</div>	
-	</body>
+	<script type="text/javascript" src="monajax.js"></script>
 					
 </html>
