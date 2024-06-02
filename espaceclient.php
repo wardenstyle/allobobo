@@ -5,7 +5,7 @@
  * Page de consultation
  * PHP : Restitution de données
  * Html : Tableau de présentation
- * Dernière modification 21/05/2024
+ * Dernière modification 02/06/2024
  * fichier ajouté sur git
  */
 if (session_status() === PHP_SESSION_NONE) {
@@ -25,7 +25,10 @@ if(isset($_SESSION['email_user'])){
 		td, h3, h4{font-family:'Roboto';}
 		.tab-content{display:none};
 		.m-top-10{margin-top:10px;}
-		/**a.active{background-color:#007bff;color:white;}*/
+		button.active{
+			background-color:#007bff;
+			color:white;
+		}
 	</style>
 	
 <body>
@@ -49,13 +52,13 @@ if(isset($_SESSION['email_user'])){
 						<div class="card-header">
 							<ul class="nav nav-tabs card-header-tabs">
 							<li class="nav-item">
-								<a class="nav-link active" id="lien_actif" onclick="openTab(0)">Mon compte</a>
+								<button class="nav-link active" id="lien_actif0" onclick="openTab(0)">Mon compte</button>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" onclick="openTab(1)">Mes Rendez-vous</a>
+								<button class="nav-link" id="lien_actif1" onclick="openTab(1)">Mes Rendez-vous</button>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" onclick="openTab(2)">Historique des Rendez-vous</a>
+								<button class="nav-link" id="lien_actif2" onclick="openTab(2)">Historique des Rendez-vous</button>
 							</li>
 							</ul>
 						</div>
@@ -83,14 +86,16 @@ if(isset($_SESSION['email_user'])){
 							<!-- Début de l'onglet mes rendez-vous -->
 							<div class="tab-content" style="display:none">
 								<h5 class="card-title">Vos prochain rendez-vous</h5>			
-								<table style="padding:10px;">
-									<tr>
-										<td>Jour/heure</td>
-										<td>Nom</td>
-										<td>Médecin</td>
-										<td>Spécialité</td>
-										<td>Annulation</td>	
-									</tr>
+								<table style="padding:10px;" class="table table-striped">
+									<thead>
+										<tr>
+											<th scope="col">Jour/heure</th>
+											<th scope="col">Nom</th>
+											<th scope="col">Médecin</th>
+											<th scope="col">Spécialité</th>
+											<th scope="col">Annulation</th>	
+										</tr>
+									</thead>
 							<?php 
 				
 							// récupérer les rendez-vous à venir
@@ -104,17 +109,18 @@ if(isset($_SESSION['email_user'])){
 							if($nb_rdv > 0) {
 								while($row=$requete->fetch(PDO::FETCH_ASSOC)){
 								?>
-								<tr>
-									<td><?php 
-									$jour = $row['jour'];
-									$jour = str_split($jour,1);
-									echo $jour[8].''.$jour[9].'/'.$jour[5].''.$jour[6].'/'.$jour[0].''.$jour[1].''.$jour[2].''.$jour[3].' à ' .$jour[11].''.$jour[12].':'.$jour[14].''.$jour[15];
-									?></td>												
-									<td><?php echo $row['nom'];?></td>									
-									<td><?php echo $row['nom_medecin']; ?></td>
-									<td><?php echo $row['specialite']; ?></td>									
-									<td><a href='http://allobobo.alwaysdata.net/annulation.php?id_rdv=<?php echo $row['id'] ?>'>Annuler</td>							
-								</tr>
+									<tbody>
+										<tr>
+											<td><?php 
+											$jour = $row['jour'];
+											$jour = str_split($jour,1);
+											echo $jour[8].''.$jour[9].'/'.$jour[5].''.$jour[6].'/'.$jour[0].''.$jour[1].''.$jour[2].''.$jour[3].' à ' .$jour[11].''.$jour[12].':'.$jour[14].''.$jour[15];
+											?></td>												
+											<td><?php echo $row['nom'];?></td>									
+											<td><?php echo $row['nom_medecin']; ?></td>
+											<td><?php echo $row['specialite']; ?></td>									
+											<td><a href='http://allobobo.alwaysdata.net/annulation.php?id_rdv=<?php echo $row['id'] ?>'>Annuler</td>							
+										</tr>
 							<?php
 								}	
 							}else {
@@ -125,7 +131,7 @@ if(isset($_SESSION['email_user'])){
 									<td>
 								</tr>
 					 <?php }?>
-					
+									</tbody>
 								</table>
 							</div>
 							<!-- fin de l'onglet mes rendez-vous -->
@@ -135,14 +141,15 @@ if(isset($_SESSION['email_user'])){
 							<div class="tab-content">
 								<h5 class="card-title">Historique de vos rendez-vous</h5>
 
-								<table style="padding:10px;">
-
-								<tr>
-									<td>Jour/heure</td>
-									<td>Nom</td>
-									<td>Médecin</td>
-									<td>Spécialité</td>
-								</tr>
+								<table style="padding:10px;" class="table table-striped">
+									<thead>
+										<tr>
+											<th scope="col">Jour/heure</th>
+											<th scope="col">Nom</th>
+											<th scope="col">Médecin</th>
+											<th scope="col">Spécialité</th>
+										</tr>
+									</thead>
 							<?php
 
 							// récupérer historique des rendez-vous
@@ -157,29 +164,30 @@ if(isset($_SESSION['email_user'])){
 								
 								while($row=$requete6->fetch(PDO::FETCH_ASSOC)){
 							?>
-								<tr>
-									<td><?php 
-									$jour = $row['jour'];
-									$jour = str_split($jour,1);
-									echo $jour[8].''.$jour[9].'/'.$jour[5].''.$jour[6].'/'.$jour[0].''.$jour[1].''.$jour[2].''.$jour[3].' à ' .$jour[11].''.$jour[12].':'.$jour[14].''.$jour[15];
-									?></td>									
-									<td><?php echo $row['nom'];?></td>									
-									<td><?php echo $row['nom_medecin']; ?></td>
-									<td><?php echo $row['specialite']; ?></td>
-											
-								</tr>
-								<?php
-									}
-								}else {
-									?>
-									<tr style="text-align:center;">
-										<td class="card-title">
-											vous n'avez aucun rendez-vous passés
-										<td>
+									<tbody>
+										<tr>
+											<td><?php 
+											$jour = $row['jour'];
+											$jour = str_split($jour,1);
+											echo $jour[8].''.$jour[9].'/'.$jour[5].''.$jour[6].'/'.$jour[0].''.$jour[1].''.$jour[2].''.$jour[3].' à ' .$jour[11].''.$jour[12].':'.$jour[14].''.$jour[15];
+											?></td>									
+											<td><?php echo $row['nom'];?></td>									
+											<td><?php echo $row['nom_medecin']; ?></td>
+											<td><?php echo $row['specialite']; ?></td>
+													
+										</tr>
+										<?php
+											}
+										}else {
+											?>
+											<tr style="text-align:center;">
+												<td class="card-title">
+													vous n'avez aucun rendez-vous passés
+												<td>
 
-									</tr>
-								<?php }?>
-
+											</tr>
+										<?php }?>
+									</tbody>
 								</table>
 							</div>
 							<!-- fin de l'onglet hisorique -->
@@ -193,18 +201,36 @@ if(isset($_SESSION['email_user'])){
 	<script>
 
 		function openTab(x) {
+
 			let contents = document.querySelectorAll(".tab-content");
-			//let btns = document.querySelectorAll("button");
-			let btns = document.querySelectorAll("a");
+			let btns = document.querySelectorAll("button");
+			//let btns = document.querySelectorAll("a");
 			for(let i=0; i<contents.length;i++) {
 				contents[i].style.display ="none";
-				btns[i].classList.remove("active");
+				//btns[i].classList.remove("active");
 			}
+			//console.log(x);
 			// tous les contenus sont display none
 			contents[x].style.display ="block";
-			btns[x].classList.add("active");
-		}
+			//btns[x].classList.add("active");
 
+			if(x == 0) {
+				let lien_actif_0 = document.getElementById('lien_actif0').classList.add("active");
+				let lien_actif_1 = document.getElementById('lien_actif1').classList.remove("active");
+				let lien_actif_2 = document.getElementById('lien_actif2').classList.remove("active");
+			}
+			if(x == 1) {
+				let lien_actif_0 = document.getElementById('lien_actif0').classList.remove("active");
+				let lien_actif_1 = document.getElementById('lien_actif1').classList.add("active");
+				let lien_actif_2 = document.getElementById('lien_actif2').classList.remove("active");
+			}
+			if(x == 2) {
+				let lien_actif_0 = document.getElementById('lien_actif0').classList.remove("active");
+				let lien_actif_1 = document.getElementById('lien_actif1').classList.remove("active");
+				let lien_actif_2 = document.getElementById('lien_actif2').classList.add("active");
+			}
+		}
+		
 	</script>
 	
 </html>

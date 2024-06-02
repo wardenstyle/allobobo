@@ -4,7 +4,7 @@
  * Page d'inscription
  * PHP : Vérification de IHM de saisi
  * Html : Formulaire d'inscription
- * Dernière modification 21/05/2024
+ * Dernière modification 02/06/2024
  * 
  * @todo encrypter le mot de passe ligne 64
  */
