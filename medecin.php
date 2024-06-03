@@ -77,7 +77,7 @@ $requete = $bdd->query("SELECT * FROM medecin ");
     if(isset($_SESSION['email_user'])){
         if($_SESSION['email_user'] == 'admin@allobobo.fr'){ 
             $a='enabled';$compte_admin =""; $lien="agenda.php"; 
-        } else {$lien = ""; $message ='Vous devez vous être administrateur pour avoir accès aux options supplémentaires';}
+        } else {$lien = ""; $message ='Vous devez être administrateur pour avoir accès aux options supplémentaires';}
     } ?>
   <section class="department_section layout_padding">
     <div class="department_container">
