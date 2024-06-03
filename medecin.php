@@ -74,10 +74,11 @@ $requete = $bdd->query("SELECT * FROM medecin ");
   <!-- Formulaire section -->
   <?php  
     /** activation du bouton ajouter un médedin selon profil utilisateur */
+    if(isset($_SESSION['email_user'])){
         if($_SESSION['email_user'] == 'admin@allobobo.fr'){ 
             $a='enabled';$compte_admin =""; $lien="agenda.php"; 
         } else {$lien = ""; $message ='Vous devez vous être administrateur pour avoir accès aux options supplémentaires';}
-        ?>
+    } ?>
   <section class="department_section layout_padding">
     <div class="department_container">
       <div class="container ">
@@ -91,7 +92,7 @@ $requete = $bdd->query("SELECT * FROM medecin ");
                 </div>
                 <div class="detail-box">
                   <h5>
-                  <a role ="link" href="<?php echo $lien; ?>">Planning</a>
+                  <a role ="link" href="<?php if(isset($lien)) echo $lien; ?>">Planning</a>
                   </h5>
                   <p>
                   Consulter le planning des consultations.<span style="color:#a96f4b;"><?php echo $compte_admin;?></span>
