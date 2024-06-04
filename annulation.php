@@ -5,9 +5,7 @@ session_start();
 if(isset($_SESSION['email_user'])){
 
 	include('allobobo_bdd.php');
-//	$remove = $bdd->prepare("DELETE FROM reservation WHERE id='{$_GET['id_reservation']}'");
-	//$remove->execute(array("email_user" =>$_SESSION['email_user']));
-//	$remove->execute();
+
 	$sql = "DELETE FROM rdv WHERE id =:id";
 	$statement =$bdd->prepare($sql);
 	$statement->bindParam(':id', $_GET['id_rdv'],PDO::PARAM_INT);

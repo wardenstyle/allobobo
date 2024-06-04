@@ -11,7 +11,7 @@
 if (session_status() === PHP_SESSION_NONE) {
 	session_start();
 }
-if(isset($_SESSION['email_user'])){
+if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESSION['type_compte'] == 'ADM'){
 	include('allobobo_bdd.php');
 	$requete4 = $bdd->query("SELECT * FROM user WHERE email_user='{$_SESSION['email_user']}'");
 	$nom = $requete4->fetch();
@@ -100,8 +100,14 @@ if(isset($_SESSION['email_user'])){
 				
 							// récupérer les rendez-vous à venir
 				
-							$requete = $bdd->query("SELECT * FROM rdv INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin WHERE email='{$_SESSION['email_user']}' AND jour > NOW()");
-							$requete2 = $bdd->query("SELECT COUNT(*) FROM rdv INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin WHERE email='{$_SESSION['email_user']}'AND jour > NOW()");
+							$requete = $bdd->query(
+							"SELECT * FROM rdv
+							 INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin 
+							 WHERE email='{$_SESSION['email_user']}' AND jour > NOW() ORDER BY jour ASC");
+							$requete2 = $bdd->query(
+							"SELECT COUNT(*) FROM rdv 
+							INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin 
+							WHERE email='{$_SESSION['email_user']}'AND jour > NOW()");
 							$nb_rdv = $requete2->fetchColumn();
 
 							// affichage des données
@@ -156,7 +162,7 @@ if(isset($_SESSION['email_user'])){
 							$requete5 = $bdd->query("SELECT COUNT(*) FROM rdv
 							INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin WHERE email='{$_SESSION['email_user']}'AND jour < NOW()");
 							$requete6 = $bdd->query("SELECT jour, nom, nom_medecin, specialite FROM rdv
-							INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin WHERE email='{$_SESSION['email_user']}'AND jour < NOW()");
+							INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin WHERE email='{$_SESSION['email_user']}'AND jour < NOW() ORDER BY jour ASC");
 
 							$nb_ancienrdv = $requete5->fetchColumn();
 

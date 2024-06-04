@@ -11,10 +11,11 @@ if (session_status() === PHP_SESSION_NONE) {
 	session_start();
 }
 //var_dump($_SESSION);
-if($_SESSION['type_compte']=='MDC') {
+if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
 
     if(isset($_SESSION['email_user'])){
         include('allobobo_bdd.php');
+        // récupérer les info du médecin
         $requete4 = $bdd->query(
         "SELECT * FROM user INNER JOIN medecin ON user.code = medecin.code_user WHERE medecin.code_user='{$_SESSION['code']}'");
         $nom = $requete4->fetch();
@@ -74,7 +75,7 @@ if($_SESSION['type_compte']=='MDC') {
                                     <div style="border:solid;color:grey;">
                                     <span><?php echo $nom['specialite']; ?><img src="images/m5" width="25%"><span>
                                     <a href="deco.php" class="btn btn-dark">Se déconnecter</a>
-                                    <a href="agenda.php>" title="Planning" class="btn btn-primary">Planning</a>
+                                    <a href="agenda_medecin.php" title="Planning" class="btn btn-primary">Mon planning</a>
                                     </div>
                                     <br/>
                                     <p class="card-text">Voici vos consultations à venir</p>
@@ -98,7 +99,13 @@ if($_SESSION['type_compte']=='MDC') {
                                 AND jour > NOW()");
                                 $nb_rdv = $requete2->fetchColumn();
                                 $total = $nb_rdv;
-                                // fonction ceil récupere le nombre supérieur en cas de nombre à virgule
+
+                                /**
+                                 * Pagination
+                                 * affichage ligne 152
+                                 * fonction ceil récupere le nombre supérieur en cas de nombre à virgule
+                                 */
+                                
                                 $nombreDePages=ceil($total/$ligne_par_page);
 
                                 if(isset($_GET['page'])) {
@@ -114,7 +121,7 @@ if($_SESSION['type_compte']=='MDC') {
 
                                 $requete = $bdd->query(
                                 "SELECT * FROM rdv INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin 
-                                WHERE code_user='{$_SESSION['code']}' AND jour > NOW() LIMIT $premiereEntree,$ligne_par_page");
+                                WHERE code_user='{$_SESSION['code']}' AND jour > NOW() ORDER BY jour ASC LIMIT $premiereEntree,$ligne_par_page");
                                 
                                 // affichage des données
 
@@ -143,7 +150,7 @@ if($_SESSION['type_compte']=='MDC') {
                         <?php }?>
                                         </tbody>
                                     </table>
-                                <?php 
+                                <?php /** Pagination */
                                     for($i=1; $i<=$nombreDePages; $i++){
                                         if($i==$pageActuelle){				//Si il s'agit de la page actuelle...
                                             echo ' [ '.$i.' ] ';																		
@@ -213,10 +220,9 @@ if($_SESSION['type_compte']=='MDC') {
 
                                 <?php 
                                     // récupérer le nombre de patient
-                                    $requete5 = $bdd->query("SELECT DISTINCT COUNT(nom_user) 
-                                    FROM user INNER JOIN rdv ON rdv.id = user.id_rdv 
-                                    INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin 
-                                    WHERE medecin.code_user='{$_SESSION['code']}'");
+
+                                    $requete5 = $bdd->query("SELECT COUNT(*) 
+                                    FROM (SELECT DISTINCT nom FROM rdv WHERE rdv.id_medecin='{$_SESSION['code']}') AS distinct_noms");
 
                                     $nb_patient = $requete5->fetchColumn();
                                 ?>
@@ -236,10 +242,8 @@ if($_SESSION['type_compte']=='MDC') {
 
                                 // récupérer mes patients
 
-                                $requete6 = $bdd->query("SELECT DISTINCT nom_user 
-                                FROM user INNER JOIN rdv ON rdv.id = user.id_rdv 
-                                INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin 
-                                WHERE medecin.code_user='{$_SESSION['code']}'");                              
+                                $requete6 = $bdd->query("SELECT DISTINCT nom 
+                                FROM rdv WHERE id_medecin='{$_SESSION['code']}'");                              
 
                                 if($nb_patient > 0) {
                                     
@@ -247,7 +251,7 @@ if($_SESSION['type_compte']=='MDC') {
                                 ?>
                                         <tbody>
 								
-                                                <td><?php echo $value['nom_user'];?></td>									
+                                                <td><?php echo $value['nom'];?></td>									
                                                 <td>--</td>
                                                         
                                             </tr>
@@ -309,7 +313,6 @@ if($_SESSION['type_compte']=='MDC') {
         </script>
         
     </html>
-
 
     <?php
 

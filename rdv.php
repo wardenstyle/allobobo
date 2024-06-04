@@ -14,7 +14,7 @@
  * Controle sur un créneau horaire d'un médecin en AJAX :FAIT
  * Controle sur le mot de passe
  */
-$password=1;
+
 include('allobobo_bdd.php');
 /**
  * Récupération de la liste des médecins
@@ -112,20 +112,20 @@ if(!empty($_POST)){
 			
 		));
 		
-		$reservationId = $bdd->lastInsertId();	
-		$verif_email = $bdd->prepare('SELECT * FROM user WHERE email_user="'.$email.'"');
-		$verif_email->execute();
-		$test_email = $verif_email->fetch();
-		if (empty($test_email)) {
+		// $reservationId = $bdd->lastInsertId();	
+		// $verif_email = $bdd->prepare('SELECT * FROM user WHERE email_user="'.$email.'"');
+		// $verif_email->execute();
+		// $test_email = $verif_email->fetch();
+		// if (empty($test_email)) {
 		
-			$req = $bdd->prepare('INSERT INTO user (nom_user,email_user,mdp,id_rdv) VALUES (:nom_user,:email_user,:mdp,:id_rdv)');
-			$req->execute(array(
-				'nom_user' => $nom,
-				'email_user' => $email,
-				'mdp' => $password,
-				'id_rdv' => $reservationId
-			));
-	    }
+		// 	$req = $bdd->prepare('INSERT INTO user (nom_user,email_user,mdp,id_rdv) VALUES (:nom_user,:email_user,:mdp,:id_rdv)');
+		// 	$req->execute(array(
+		// 		'nom_user' => $nom,
+		// 		'email_user' => $email,
+		// 		'mdp' => $password,
+		// 		'id_rdv' => $reservationId
+		// 	));
+	    // }
 		
 		$req->closeCursor();
 		$to = $email;

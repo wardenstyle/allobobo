@@ -5,8 +5,11 @@
  * Conversion en données JSON
  * @todo mettre les liens annulation dans le calendrier
  */
-session_start();
-if(isset($_SESSION['email_user']) == 'admin@allobobo.fr'){ 
+if (session_status() === PHP_SESSION_NONE) {
+	session_start();
+}
+
+if(isset($_SESSION['type_compte']) && $_SESSION['type_compte'] =='ADM') {
 
   include('allobobo_bdd.php');
   $requete = $bdd->query("SELECT * FROM rdv INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin");
@@ -208,5 +211,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <?php 
 }else {
-  header('Location: connexion.php');
+  echo 'error 403 Forbiden';
 } ?>

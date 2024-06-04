@@ -136,6 +136,12 @@ $requete = $bdd->query("SELECT * FROM medecin ");
             </div>
 
             <div class="form-group">
+              <label for="password" style="color:black; font-weight:bold">Mot de passe</label>
+              <input class="form-control" name="password" id="password" type="password" 
+              value="<?php if(isset($password))echo $password; ?>" required>
+            </div>
+
+            <div class="form-group">
             <label for="nom" style="color:black; font-weight:bold">Spécialité</label>
               <select name="specialite" id="specialite" class="form-control">
                     <option value="Médecin généraliste">Médecin généraliste</option>
