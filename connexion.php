@@ -33,10 +33,15 @@ if(isset($_POST['submit'])) {
 		if($userexist==1){
 			session_start();
 			$userinfo = $requser->fetch();
-			$_SESSION['code'] = $userinfo['code'];
 			$_SESSION['email_user'] = $userinfo['email_user'];
-            header("Location: espaceclient.php?id=".$_SESSION['email_user']);
-
+			$_SESSION['type_compte'] = $userinfo['type_compte'];
+			if($userinfo['type_compte'] == 'PAT' || $userinfo['type_compte'] == 'ADM') {
+            	header("Location: espaceclient.php?id=".$_SESSION['email_user']);
+			}else {
+				// récupérer le code_user du médecin
+				$_SESSION['code'] = $userinfo['code'];
+				header("Location: espacemedecin.php");
+			}
 		}else{
 			$erreur1 = "* adresse email ou mot de passe incorrect ";
 		}	

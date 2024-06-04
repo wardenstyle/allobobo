@@ -8,7 +8,9 @@
  * Html : formulaire
  * Dernière modification 22/05/2024
  */
-
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 $a = "disabled"; // désactiver le bouton pour ajouter les médecins selon le profil
 $compte_admin = "(compte admin requis)"; //ajouter un médecin selon le profil
 include('allobobo_bdd.php');

@@ -2,10 +2,22 @@
 /**
  * Navigation
  * Html : barre de navigation
- * Dernière modification le 27/05/2024
+ * Dernière modification le 04/06/2024
+ * Habilitation
  */
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
+}
+//var_dump($_SESSION);
+if(isset($_SESSION['type_compte'])) {
+    
+  if($_SESSION['type_compte'] == 'MDC') {
+    $lien = 'espacemedecin.php';
+  }
+  if($_SESSION['type_compte'] == 'ADM' || $_SESSION['type_compte'] == 'PAT') {
+    $lien = 'espaceclient.php';
+  }
+
 }
 ?>
 
@@ -38,7 +50,7 @@ if (session_status() === PHP_SESSION_NONE) {
               </li>
               <li class="nav-item">
                 <?php if(isset($_SESSION['email_user'])) { 
-                ?><a class="nav-link" href="espaceclient.php">Espace personnel</a>
+                ?><a class="nav-link" href="<?php echo $lien; ?>">Espace personnel</a>
                 <?php }else{ 
                 ?><a class="nav-link" href="connexion.php">se connecter</a>
                 <?php } ?>

@@ -18,9 +18,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `rdv` (
-  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `jour` datetime NOT NULL,
-  `id_medecin` int(1) NOT NULL,
+  `id_medecin` int NOT NULL,
   `nom` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `annulation` varchar(150) NOT NULL,
@@ -91,11 +91,12 @@ INSERT INTO `rdv` (`id`, `jour`, `id_medecin`, `nom`, `email`, `annulation`) VAL
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `code` int(2) NOT NULL AUTO_INCREMENT,
+  `code` int NOT NULL AUTO_INCREMENT,
   `nom_user` varchar(100) NOT NULL,
   `email_user` varchar(100) NOT NULL,
   `mdp` varchar(100) NOT NULL,
-  `id_rdv` int(3) DEFAULT NULL,
+  `type_compte` varchar(5) DEFAULT NULL,
+  `id_rdv` int DEFAULT NULL,
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
 
@@ -103,31 +104,35 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Contenu de la table `user`
 --
 
-INSERT INTO `user` (`code`, `nom_user`, `email_user`, `mdp`, `id_rdv`) VALUES
-(20, 'david', 'david@allobobo.fr', '1', 28),
-(21, 'admin', 'admin@allobobo.fr', '21232f297a57a5a743894a0e4a801fc3', 30),
-(22, 'Richard', 'richard@allobobo.fr', 'azerty', 31),
-(23, 'Marc', 'marc@allobobo.fr', 'azerty', 120),
-(24, 'Julie', 'julie@allobobo.fr', 'azerty', 121),
-(25, 'Marie', 'marie@allobobo.fr', 'azerty', 122),
-(26, 'Aurélie', 'aurel@allobobo.fr', 'azerty', 124),
-(27, 'Manu', 'manu@allobobo.fr', 'azerty', 125),
-(28, 'Robert', 'robert@allobobo.fr', 'azerty', 126),
-(29, 'Serge', 'Sjean@allobobo.fr', 'azerty', 127),
-(30, 'Mouloud', 'Mouloud@allobobo.fr', 'azerty', 129)
-;
+INSERT INTO `user` (`code`, `nom_user`, `email_user`,`type_compte`, `mdp`, `id_rdv`) VALUES
+(20, 'david', 'david@allobobo.fr','PAT', 'ab4f63f9ac65152575886860dde480a1', 28),
+(21, 'admin', 'admin@allobobo.fr','ADM', '21232f297a57a5a743894a0e4a801fc3', 30),
+(22, 'Richard', 'richard@allobobo.fr','PAT', 'azerty', 31),
+(23, 'Marc', 'marc@allobobo.fr','PAT', 'azerty', 120),
+(24, 'Julie', 'julie@allobobo.fr','PAT', 'azerty', 121),
+(25, 'Marie', 'marie@allobobo.fr','PAT', 'azerty', 122),
+(26, 'Aurélie', 'aurel@allobobo.fr','PAT', 'azerty', 124),
+(27, 'Manu', 'manu@allobobo.fr','PAT', 'azerty', 125),
+(28, 'Robert', 'robert@allobobo.fr','PAT', 'azerty', 126),
+(29, 'Serge', 'Sjean@allobobo.fr','PAT', 'azerty', 127),
+(30, 'Mouloud', 'Mouloud@allobobo.fr','PAT', 'azerty', 129),
+
+(32, 'Dr Queen', 'queen@allobobo.fr','MDC', 'ab4f63f9ac65152575886860dde480a1', null),
+(33, 'Dr Who', 'who@allobobo.fr','MDC', 'ab4f63f9ac65152575886860dde480a1', null),
+(34, 'Dr House', 'franck@allobobo.fr','MDC', 'ab4f63f9ac65152575886860dde480a1', null);
 
 --
 -- Structure de la table `medecin`
 --
 
 CREATE TABLE IF NOT EXISTS `medecin` (
-  `id_medecin` int(3) NOT NULL AUTO_INCREMENT,
+  `id_medecin` int NOT NULL AUTO_INCREMENT,
   `nom_medecin` varchar(100) NOT NULL,
   `email_medecin` varchar(100) NOT NULL,
   `disponibilite` varchar(100) NOT NULL,
   `specialite` varchar(100) NOT NULL,
   `image` varchar(100) NOT NULL,
+  `code_user` int NOT NULL,
 
   PRIMARY KEY (`id_medecin`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
@@ -136,10 +141,10 @@ CREATE TABLE IF NOT EXISTS `medecin` (
 -- Contenu de la table `medecin`
 --
 
-INSERT INTO `medecin` (`id_medecin`, `nom_medecin`, `email_medecin`, `disponibilite`,`specialite`,`image`) VALUES
-(1, 'Dr Queen', 'queen@allobobo.fr', '1','Médecin généraliste','images/m1.png'),
-(2, 'Dr Who', 'who@allobobo.fr', '1','Cardiologue','images/m2.png'),
-(3, 'Dr House', 'franck@allobobo.fr', '1','Anesthésiste','images/m3.png');
+INSERT INTO `medecin` (`id_medecin`, `nom_medecin`, `email_medecin`, `disponibilite`,`specialite`,`image`, `code_user`) VALUES
+(1, 'Dr Queen', 'queen@allobobo.fr', '1','Médecin généraliste','images/m1.png','32'),
+(2, 'Dr Who', 'who@allobobo.fr', '1','Cardiologue','images/m2.png','33'),
+(3, 'Dr House', 'franck@allobobo.fr', '1','Anesthésiste','images/m3.png','34');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -57,11 +57,13 @@ if(isset($_POST['submit'])){
 	if($validation){
 		$password = md5($password);			
 		include('allobobo_bdd.php');
-		$req = $bdd->prepare('INSERT INTO user (nom_user,email_user,mdp) VALUES (:nom_user,:email_user,:mdp)'); //execution de la requete sql
+		$req = $bdd->prepare('INSERT INTO user (nom_user,email_user,mdp,type_compte) VALUES (:nom_user,:email_user,:mdp,:type_compte)');
+        //execution de la requete sql prepare
 		$req->execute(array(
 				'nom_user' => $nom,
 				'email_user' => $email,
-				'mdp' => $password
+				'mdp' => $password,
+                'type_compte' => 'PAT'
 								
 		));
 		$req->closeCursor();
