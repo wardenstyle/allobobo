@@ -70,7 +70,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']== 'ADM') {
 					'email_medecin' => $email,
 					'specialite' => $specialite,
 					'disponibilite' => 1,
-					'image' => 'images/m4.jpg',
+					'image' => 'images/m5.jpg',
 					'code_user' => $inscriptionId
 									
 			));

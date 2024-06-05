@@ -73,7 +73,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
                                 <div class="tab-content" style="display:block">
                                     <h5 class="card-title">Bonjour <?php echo ' '.$nom['nom_user'].', '?></h5>
                                     <div style="border:solid;color:grey;">
-                                    <span><?php echo $nom['specialite']; ?><img src="images/m5" width="25%"><span>
+                                    <span><?php echo $nom['specialite']; ?><img src="<?php echo $nom['image']; ?>" width="25%"><span>
                                     <a href="deco.php" class="btn btn-dark">Se déconnecter</a>
                                     <a href="agenda_medecin.php" title="Planning" class="btn btn-primary">Mon planning</a>
                                     </div>
@@ -222,7 +222,8 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
                                     // récupérer le nombre de patient
 
                                     $requete5 = $bdd->query("SELECT COUNT(*) 
-                                    FROM (SELECT DISTINCT nom FROM rdv WHERE rdv.id_medecin='{$_SESSION['code']}') AS distinct_noms");
+                                    FROM (SELECT DISTINCT nom FROM rdv INNER JOIN medecin ON rdv.id_medecin = medecin.id_medecin
+                                    WHERE medecin.code_user='{$_SESSION['code']}') AS distinct_noms");
 
                                     $nb_patient = $requete5->fetchColumn();
                                 ?>
@@ -243,8 +244,9 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
                                 // récupérer mes patients
 
                                 $requete6 = $bdd->query("SELECT DISTINCT nom 
-                                FROM rdv WHERE id_medecin='{$_SESSION['code']}'");                              
-
+                                FROM rdv INNER JOIN medecin ON rdv.id_medecin = medecin.id_medecin
+                                WHERE medecin.code_user='{$_SESSION['code']}'");  
+                           
                                 if($nb_patient > 0) {
                                     
                                     foreach($requete6 as $key => $value){

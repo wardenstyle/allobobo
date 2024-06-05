@@ -35,7 +35,9 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
     echo "<input type='hidden' style='display:none' id='nb_rdv' value='$nb_rdv'>";
 
       /**Encodage du dernière enregistrement */
+    
     $time = $derniereligne['jour'];
+    if($time == null) { $time= date('Y-m-j H:i:s');}
     $time_end = strtotime("+15 minutes", strtotime($time));
     $fin_consultation = date('Y-m-j H:i:s', $time_end);
     $json1 = array();
