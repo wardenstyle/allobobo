@@ -78,21 +78,20 @@ if(!empty($_POST)){
 	/**
 	* Vérification de la disponibilité du médecin pour les horaires
 	*/
-	//if(isset($date_choisie, $annee, $jour, $mois, $minutes, $heures, $id_medecin)) {
+
 	$date_choisie =  $annee.'-'.$mois.'-'.$jour.' '.$heures.':'.$minutes.':00'; 
-		//echo $date_choisie;
+
 	$reqdate = $bdd->prepare("SELECT jour FROM rdv WHERE jour =? AND id_medecin =?");
 	$reqdate->execute(array($date_choisie, $id_medecin));									
 	$date_result = $reqdate->rowCount();
 						
 	if($date_result != 0) {
 		$validation = false;
-			//echo "<b>Médecin non disponible pour ce créneau</b>";
+
 		$erreur_creneaux = "* Médecin non disponible pour ce créneau";					
 	}else{
 		$creneau_ok = 'créneau disponible';
 	}
-	//}
 	
 	if($validation){
 
@@ -175,105 +174,146 @@ if(!empty($_POST)){
 			<a href="index.php" class="btn btn-dark">Retour</a>
 		</center>	
 			<?php }else{ ?>
-		<center>
-			<br />
-		<article id="formulaire" style="width:50%;border: solid;color:white;padding:10px;">					
-			<h3>Jour et heure du rendez-vous <span style="font-size: 0.8em;"> (pas de rendez-vous le jour meme)<span></h3>					
-			<form method="post" action="rdv.php" >
-				<div id="erreur" style="color:red"> </div>					
-				<label for="jour" style="font-family:Arial">Jour souhaité</label><br />
-				<select name="jour" id="jour">
-				<?php
-					$jour_actuel = date("d");
-					echo '<option value="'.$jour_actuel.'" selected>'.$jour_actuel.'</option>';
-					for($i = 1;$i<=31;$i++)					
-					{										
-						 echo '<option value="'.$i.'">'.$i.'</option>';								
-					}
-						?>
-				</select>
-				
-				<select name="mois" id="mois">
-				<?php
-					$mois_actuel = date('m')+0;
-					$mois_francais = array('','Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre');
-					$i = 1;
-					echo '<option value="'.$mois_actuel.'" selected>'.$mois_francais[$mois_actuel].'</option>';
-					for($i = 1; $i<=12;$i++)
-					{
-						echo '<option value="'.$i.'">'.$mois_francais[$i].'</option>';
-					}
-					?>
-				</select>
 
-				<select name="annee" id="annee">
-				<?php
-					$annee_actuelle = date('Y');
-					$i = 0;
-					while($i < 3)
-					{
-						$annees = $annee_actuelle + $i;
-						if((isset($annee)) && ($annee == $annees)){
-							echo '<option value="'.$annees.'" selected>'.$annees.'</option>';
-						}else{
-							echo '<option value="'.$annees.'">'.$annees.'</option>';
-							}
-						$i++;
-					}
-				?>
-				</select>
-					<br />
-				<label for="heure" style="font-family:Arial">Heure (entre 10:00 à 13:00 et de 14:00 à 21:30)</label>
-				<br />
-				<select name="heures" id="heures" class="small">
-				<?php for($i=10;$i<14;$i++) {
-						echo '<option value='.$i.'>'.$i.'</option>';
-				}
-					for ($i=14;$i<22;$i++) {
-						echo '<option value='.$i.'>'.$i.'</option>';	
-					}				
-				?>
-				</select> <span style="color:black">:</span>
-				<label for="minutes" style="font-family:Arial"></label>
-				<select name="minutes" id="minutes" class="small">
-						<option value=00>00</option>
-						<option value=15>15</option>
-						<option value=30>30</option>
-						<option value=45>45</option>
-				</select>						
-				<br />
-				<label for="id_medecin" style="font-family:Arial">Choix du médecin:</label><br />
-					<select name="id_medecin" id="id_medecin" class="small" onchange="verifier_creneau()" onkeyup="verifier_creneau()">
-						<option value="">Choisissez un médecin</option>
-						<?php while( $row=$requete->fetch(PDO::FETCH_ASSOC)){ ?>
-						<option value=<?php if(isset($row['id_medecin'])) echo $row['id_medecin'];?>><?php if(isset($row['nom_medecin'])) echo $row['nom_medecin'] ?></option>
-						<?php } ?>
-					</select>
-				<div id="resultat" style="display:inline;background-color:#a96f4b;color:white; font-family:Arial;padding:2px;"></div>
-				<br />			
-				<br />
-				<div class="transbox">
-					<h3>Informations complémentaires</h3>									
-					<label for="nom" style="font-family:Arial">Votre nom</label><br />
-					<input type="text" name="nom" id="nom" value="<?php if(isset($nom))echo $nom; ?>" /><br />
-					<label for="nom" style="font-family:Arial">Votre Email</label><br />
-					<input type ="text" name="email" id="email" placeholder= "jeandupont@gmail.com" value="<?php if(isset($email))echo $email; ?>" /><br />					
+				<div class="container mt-5">
+        			<div class="row justify-content-center">
+						<div class="col-md-8">
+
+							<article id="formulaire" class="border rounded" style="padding:10px">					
+								<h3>Jour et heure du rendez-vous <span style="font-size: 0.8em;"> (pas de rendez-vous le jour même)<span></h3>					
+								<form method="post" action="rdv.php" >
+									<div id="erreur" style="color:red"> </div>
+
+									<p>Jour souhaité</p>
+									<div class="form-row">
+										<div class="col-2">			
+											<select name="jour" id="jour" class="form-control">
+											<?php
+												$jour_actuel = date("d");
+												echo '<option value="'.$jour_actuel.'" selected>'.$jour_actuel.'</option>';
+												for($i = 1;$i<=31;$i++)					
+												{										
+													echo '<option value="'.$i.'">'.$i.'</option>';								
+												}
+													?>
+											</select>
+										</div>
+
+										<div class="col-4">
+											<select name="mois" id="mois" class="form-control">
+											<?php
+												$mois_actuel = date('m')+0;
+												$mois_francais = array('','Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre');
+												$i = 1;
+												echo '<option value="'.$mois_actuel.'" selected>'.$mois_francais[$mois_actuel].'</option>';
+												for($i = 1; $i<=12;$i++)
+												{
+													echo '<option value="'.$i.'">'.$mois_francais[$i].'</option>';
+												}
+												?>
+											</select>
+										</div>
+
+										<div class="col-6">
+											<select name="annee" id="annee" class="form-control">
+											<?php
+												$annee_actuelle = date('Y');
+												$i = 0;
+												while($i < 3)
+												{
+													$annees = $annee_actuelle + $i;
+													if((isset($annee)) && ($annee == $annees)){
+														echo '<option value="'.$annees.'" selected>'.$annees.'</option>';
+													}else{
+														echo '<option value="'.$annees.'">'.$annees.'</option>';
+														}
+													$i++;
+												}
+											?>
+												</select>
+										</div>
+									</div>
+										<br />
+									<p>Heure (entre 10:00 à 13:00 et de 14:00 à 21:30)</p>
+									
+									<div class="form-row">
+										<div class="col-2">	
+											<select name="heures" id="heures" class="form-control">
+											<?php for($i=10;$i<14;$i++) {
+													echo '<option value='.$i.'>'.$i.'</option>';
+											}
+												for ($i=14;$i<22;$i++) {
+													echo '<option value='.$i.'>'.$i.'</option>';	
+												}				
+											?>
+											</select>
+										</div><span style="color:white">:</span>
+										<div class="col-2">	
+											<select name="minutes" id="minutes" class="form-control">
+													<option value=00>00</option>
+													<option value=15>15</option>
+													<option value=30>30</option>
+													<option value=45>45</option>
+											</select>
+										</div>
+									</div>						
+									<br />
+									<label for="id_medecin" style="font-family:Arial">Choix du médecin:</label><br />
+										<select name="id_medecin" id="id_medecin" class="small" onchange="verifier_creneau()" onkeyup="verifier_creneau()">
+											<option value="">Choisissez un médecin</option>
+											<?php while( $row=$requete->fetch(PDO::FETCH_ASSOC)){ ?>
+											<option value=<?php if(isset($row['id_medecin'])) echo $row['id_medecin'];?>><?php if(isset($row['nom_medecin'])) echo $row['nom_medecin'] ?></option>
+											<?php } ?>
+										</select>
+									<div id="resultat" style="display:inline;background-color:#a96f4b;color:white; font-family:Arial;padding:2px;"></div>
+									<br />			
+									<br />
+									<div class="transbox">
+										<h3>Informations complémentaires</h3>									
+										<label for="nom" style="font-family:Arial">Votre nom</label><br />
+										<input type="text" name="nom" id="nom" value="<?php if(isset($nom))echo $nom; ?>" /><br />
+										<label for="nom" style="font-family:Arial">Votre Email</label><br />
+										<input type ="text" name="email" id="email" placeholder= "jeandupont@gmail.com" value="<?php if(isset($email))echo $email; ?>" /><br />					
+									</div>
+									<br />
+									<input type="submit" class="btn btn-primary" value="Validez"/>
+									<a href="index.php" class="btn btn-dark">Retour</a>
+
+								</form>
+								<?php }?>
+							</article>
+
+						<?php if(isset($erreur_date)) echo '<p>' .$erreur_date.'</p>'; ?>
+						<?php if(isset ($erreur_heure)) echo '<p>' .$erreur_heure.'</p>'; ?>
+						<?php if(isset ($erreur_nom)) echo '<p>' .$erreur_nom.'</p>'; ?>
+						<?php if(isset ($erreur_email)) echo '<p>' .$erreur_email.'</p>'; ?>
+						<?php if(isset ($erreur_medecin)) echo '<p>' .$erreur_medecin.'</p>'; ?>
+						<?php if(isset ($erreur_creneaux)) echo '<p>' .$erreur_creneaux.'</p>'; ?>
+
+					</div>
 				</div>
-				<br />
-				<input type="submit" class="btn btn-primary" value="Validez"/>
-				<a href="index.php" class="btn btn-dark">Retour</a>
-
-			</form>
-			<?php }?>
-		</article>
-			<?php if(isset($erreur_date)) echo '<p>' .$erreur_date.'</p>'; ?>
-			<?php if(isset ($erreur_heure)) echo '<p>' .$erreur_heure.'</p>'; ?>
-			<?php if(isset ($erreur_nom)) echo '<p>' .$erreur_nom.'</p>'; ?>
-			<?php if(isset ($erreur_email)) echo '<p>' .$erreur_email.'</p>'; ?>
-			<?php if(isset ($erreur_medecin)) echo '<p>' .$erreur_medecin.'</p>'; ?>
-			<?php if(isset ($erreur_creneaux)) echo '<p>' .$erreur_creneaux.'</p>'; ?>
-		</center>
+			</div>
 		</div>
+
+
+		<div class="container mt-5">
+    <form>
+      <div class="form-row">
+        <div class="col">
+          <label for="jour">Jour</label>
+          <input type="number" class="form-control" id="jour" placeholder="Jour">
+        </div>
+        <div class="col">
+          <label for="mois">Mois</label>
+          <input type="number" class="form-control" id="mois" placeholder="Mois">
+        </div>
+        <div class="col">
+          <label for="annee">Année</label>
+          <input type="number" class="form-control" id="annee" placeholder="Année">
+        </div>
+      </div>
+    </form>
+  </div>
 
 		<!-- footer section -->
 		<?php include('footer.php') ?>

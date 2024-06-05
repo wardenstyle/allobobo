@@ -30,7 +30,7 @@
               <a href="mailto:demo@allobobo.fr">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <span>
-                  demo@allobobo.fr
+                  admin@allobobo.fr
                 </span>
               </a>
             </div>

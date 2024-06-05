@@ -85,7 +85,7 @@ $requete = $bdd->query("SELECT * FROM medecin ");
     <div class="department_container">
       <div class="container ">
         <div class="heading_container heading_center">
-        <h3><?php if(isset($message)){echo $message;}  ?></h3>
+        <h3><?php if(isset($message)){echo $message;} ?></h3>
           <div class="row">
             <div class="col-md-3">
               <div class="box ">

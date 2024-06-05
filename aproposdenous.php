@@ -40,7 +40,7 @@
             </div>
             <p>
               Auditeur au CNAM de Lille pour l'année 2023 - 2024 j'ai réalisé ce site internet dans le cadre d'un TP.
-              NFE114 Systèmes d'information web est la matière qui nous enseigne les technologies utiles et nécessaires à cette conception. Je tiens à remercier toute l'équipe pédagogique. 
+              NFE114 Systèmes d'information web est la matière qui nous forme sur les technologies d'internet. Je tiens à remercier toute l'équipe pédagogique. à très bientôt. 
             </p>
             <a href="https://www.cnam-hauts-de-france.fr/">
               Read More

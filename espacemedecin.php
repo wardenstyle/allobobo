@@ -72,7 +72,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
                                 <!-- Début du contenu de l'onglet mon Compte -->
                                 <div class="tab-content" style="display:block">
                                     <h5 class="card-title">Bonjour <?php echo ' '.$nom['nom_user'].', '?></h5>
-                                    <div style="border:solid;color:grey;">
+                                    <div class="border" style="color:gray">
                                     <span><?php echo $nom['specialite']; ?><img src="<?php echo $nom['image']; ?>" width="25%"><span>
                                     <a href="deco.php" class="btn btn-dark">Se déconnecter</a>
                                     <a href="agenda_medecin.php" title="Planning" class="btn btn-primary">Mon planning</a>
