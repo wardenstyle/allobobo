@@ -25,9 +25,10 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
 
     /**récuperer le dernier enregistrement */
 
-    $requete2 = $bdd->query("SELECT MAX(id),id, jour, nom, medecin.nom_medecin FROM rdv INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin 
-    WHERE code_user='{$_SESSION['code']}'");
- 
+    $requete2 = $bdd->query("SELECT * FROM rdv 
+    INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin
+    WHERE id = (SELECT MAX(id) FROM rdv) AND code_user='{$_SESSION['code']}'");
+  
     $nb_rdv = $requete1->fetchColumn();
     $derniereligne= $requete2->fetch();
     $resultat = $requete->fetchAll();
