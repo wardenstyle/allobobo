@@ -295,26 +295,6 @@ if(!empty($_POST)){
 			</div>
 		</div>
 
-
-		<div class="container mt-5">
-    <form>
-      <div class="form-row">
-        <div class="col">
-          <label for="jour">Jour</label>
-          <input type="number" class="form-control" id="jour" placeholder="Jour">
-        </div>
-        <div class="col">
-          <label for="mois">Mois</label>
-          <input type="number" class="form-control" id="mois" placeholder="Mois">
-        </div>
-        <div class="col">
-          <label for="annee">Année</label>
-          <input type="number" class="form-control" id="annee" placeholder="Année">
-        </div>
-      </div>
-    </form>
-  </div>
-
 		<!-- footer section -->
 		<?php include('footer.php') ?>
   		<!-- footer section -->
