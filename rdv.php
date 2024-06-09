@@ -259,7 +259,7 @@ if(!empty($_POST)){
 									</div>						
 									<br />
 									<label for="id_medecin" style="font-family:Arial">Choix du médecin:</label><br />
-										<select name="id_medecin" id="id_medecin" class="small" onchange="verifier_creneau()" onkeyup="verifier_creneau()">
+										<select name="id_medecin" id="id_medecin" class="form-control col-4" onchange="verifier_creneau()" onkeyup="verifier_creneau()">
 											<option value="">Choisissez un médecin</option>
 											<?php while( $row=$requete->fetch(PDO::FETCH_ASSOC)){ ?>
 											<option value=<?php if(isset($row['id_medecin'])) echo $row['id_medecin'];?>><?php if(isset($row['nom_medecin'])) echo $row['nom_medecin'] ?></option>
