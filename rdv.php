@@ -265,7 +265,7 @@ if(!empty($_POST)){
 											<option value=<?php if(isset($row['id_medecin'])) echo $row['id_medecin'];?>><?php if(isset($row['nom_medecin'])) echo $row['nom_medecin'] ?></option>
 											<?php } ?>
 										</select>
-									<div id="resultat" style="display:inline;background-color:#a96f4b;color:white; font-family:Arial;padding:2px;"></div>
+									<div id="resultat" style="display:inline;background-color:#a96f4b;color:white; font-family:Arial;"></div>
 									<br />			
 									<br />
 									<div class="transbox">
