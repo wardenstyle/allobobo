@@ -127,9 +127,9 @@ if(isset($_POST['submit'])){
                             </div>
                             <div class="form-group">
                                 <label for="email" style="color:white; font-weight:bold">Adresse mail:</label>
-                                <input type="email" name="email" id="email" class="form-control custom-width" value="<?php if (isset($email)) echo $email; ?>" onchange="verifier_email()" onkeyup="verifier_email()">
-                                <div id="resultat" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div>
+                                <input type="email" name="email" id="email" class="form-control custom-width" value="<?php if (isset($email)) echo $email; ?>" onchange="verifier_email()" onkeyup="verifier_email()">                               
                             </div>
+                            <div id="resultat" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div>
                             <div class="form-group">
                                 <label for="password" style="color:white; font-weight:bold">Mot de passe:</label>
                                 <input type="password" name="password" id="password" class="form-control custom-width" value="<?php if (isset($password)) echo $password; ?>" onchange="verifier_mdp()" onkeyup="verifier_mdp()">
@@ -137,8 +137,8 @@ if(isset($_POST['submit'])){
                             <div class="form-group">
                                 <label for="repeatpassword" style="color:white; font-weight:bold">Confirmation mot de passe:</label>
                                 <input type="password" name="repeatpassword" id="repeatpassword" class="form-control custom-width" value="<?php if (isset($password)) echo $password; ?>" onchange="verifier_mdp()" onkeyup="verifier_mdp()">
-                                <div id="resultat2" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div>
                             </div>
+                            <div id="resultat2" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div>
                             <input id="reserver" type="submit" class="btn btn-primary" name="submit" value="Validez">
                         </form>
 
