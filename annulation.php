@@ -4,6 +4,15 @@ session_start();
 
 if(isset($_SESSION['email_user'])){
 
+	// habilitation
+	if($_SESSION['tyle_compte'] == 'MDC') {
+		$lien = 'espacemedecin.php';
+	}
+
+	if($_SESSION['tyle_compte'] == 'PAT' || $_SESSION['type_compte'] == 'ADM') {
+		$lien = 'espaceclient.php';
+	}
+
 	include('allobobo_bdd.php');
 
 	$sql = "DELETE FROM rdv WHERE id =:id";
@@ -38,7 +47,7 @@ if(isset($_SESSION['email_user'])){
 			<!-- navigation section -->
 		<center>
 		<h4>Votre rendez-vous à bien été annulé. a très bientôt !</h4>
-		<a href="espaceclient.php" class="btn btn-primary">Retourner dans votre espace</a>
+		<a href="<?php echo $lien;?>" class="btn btn-primary">Retour</a>
 		</center>
 	</div>
 	</body>
