@@ -99,6 +99,16 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte'] =='ADM') {
  
 <script>
 
+let today = new Date();
+
+// Récupère l'année, le mois et le jour
+let year = today.getFullYear();
+let month = today.getMonth() + 1; // Les mois commencent à 0, donc ajoutez 1
+let day = today.getDate();
+
+// Formate la date en une chaîne de caractères (par exemple, '2024-06-10')
+let formattedDate = year + '-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day);
+
 var i =0;
 var nb_rdv = document.getElementById('nb_rdv').value;
 var derniereligne = document.getElementById('derniereligne').value;
@@ -133,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
       },
 
-      initialDate: '2024-05-16',
+      initialDate: formattedDate,
       navLinks: true, // can click day/week names to navigate views
       businessHours: true, // display business hours
       editable: true,

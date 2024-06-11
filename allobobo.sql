@@ -80,7 +80,17 @@ INSERT INTO `rdv` (`id`, `jour`, `id_medecin`, `nom`, `email`, `annulation`) VAL
 (157, '2024-06-28 15:30:00', 2, 'Robert', 'robert@allobobo.fr', '1459621349ro'),
 (158, '2024-06-28 16:30:00', 1, 'Serge', 'serge@allobobo.fr', '1459621349serge'),
 (159, '2024-06-28 16:30:00', 2, 'Mouloud', 'mouloud@allobobo.fr', '1459621349Mouloud'),
-(160, '2024-06-28 19:30:00', 1, 'richard', 'richard@allobobo.fr', '1459612richard')
+(160, '2024-06-28 19:30:00', 1, 'richard', 'richard@allobobo.fr', '1459612richard'),
+
+(161, '2024-07-27 10:30:00', 1, 'Manu', 'manu@allobobo.fr', '14594621349maman'),
+(162, '2024-07-27 10:30:00', 2, 'Richard', 'richard@allobobo.fr', '14591221349papa'),
+(164, '2024-07-27 10:30:00', 3, 'Marie', 'marie@allobobo.fr', '1459621349marie'),
+(165, '2024-07-10 11:30:00', 2, 'Aurel', 'aurel@allobobo.fr', '1459621349aurel'),
+(166, '2024-07-10 11:30:00', 1, 'Manu', 'manu@allobobo.fr', '1459621349manu'),
+(167, '2024-07-11 15:30:00', 2, 'Robert', 'robert@allobobo.fr', '1459621349ro'),
+(168, '2024-07-12 16:30:00', 1, 'Serge', 'serge@allobobo.fr', '1459621349serge'),
+(169, '2024-07-14 16:30:00', 2, 'Mouloud', 'mouloud@allobobo.fr', '1459621349Mouloud'),
+(170, '2024-07-28 19:30:00', 1, 'richard', 'richard@allobobo.fr', '1459612richard')
 
 ;
 
