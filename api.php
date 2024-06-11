@@ -18,15 +18,18 @@ if($status == 'active') {
     $rdv = new ApiRendezvous();
 
     $email = isset($_GET['email']) ? $_GET['email'] : null;
-
+ 
     // par défaut lecture de tous les rendez-vous
     if (!empty($email)) {
+
         $stmt = $rdv->readByUser($email);
         $stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
     } else {
+
         $stmt = $rdv->read();
         $stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
+ 
     }
 
     $num = count($stmt);

@@ -40,7 +40,10 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 		$directoryPath = dirname($currentUrl);
 		$newFile = 'api.php';
 		// url api 
-		$newUrl = $directoryPath . '/' . $newFile;
+		//$newUrl = $directoryPath . '/' . $newFile;
+		$oldPart = 'espaceclient.php';
+		$newPart = 'api.php';
+		$newUrl = str_replace($oldPart, $newPart, $currentUrl);
 
 	}
 	
@@ -261,12 +264,12 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 
 								<div class="form-group">
 									<label for="text" style="color:black;font-family:Roboto"> Obtenir tous les rendez-vous (copier coller URL ci-dessous) </label>
-									<input type="text" class="form-control" disabled="<?php echo $disabled;?>" value="<?php if(isset($newUrl))echo $newUrl;?>">
+									<input type="text" class="form-control" disabled="<?php echo $disabled;?>" value="allobobo.alwaysdata.net/api.php">
 								</div>
 
 								<div class="form-group">
-									<label for="text" style="color:black;font-family:Roboto"> Obtenir les rendez-vous d'un patient (remplacer les x par l'adresse email)</label>
-									<input type="text" class="form-control" disabled="<?php echo $disabled; ?>" value="<?php if(isset($newUrl))echo $newUrl.'?email=xxx@xxx.xx'; ?>">
+									<label for="text" style="color:black;font-family:Roboto"> Obtenir les rendez-vous d'un patient (remplacer par l'adresse email du patient)</label>
+									<input type="text" class="form-control" disabled="<?php echo $disabled; ?>" value="allobobo.alwaysdata.net/api.php?email=admin@allobobo.fr">
 								</div>
 
 								</form>

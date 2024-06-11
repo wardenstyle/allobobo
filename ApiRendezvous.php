@@ -23,20 +23,17 @@
         public function readByUser($email) {
 
             include('allobobo_bdd.php');
-            $query = "SELECT id, jour, nom, email, nom_medecin FROM rdv 
-            INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin WHERE email = '$email'";
-            $requete = $bdd->prepare($query);
-            $requete->bindParam(1, $email);
-            if($requete->execute()) {
-                return $requete;
+            $stmt = $bdd->prepare( "SELECT id, jour, nom, email, nom_medecin FROM rdv 
+            INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin WHERE email = :email");
+
+            if($stmt->execute([':email' => $email])) {
+                return $stmt;
             }else {
-                printf("Erreur de la requête: %s.\n", $requete->errorInfo()[2]);
+                printf("Erreur de la requête: %s.\n", $stmt->errorInfo()[2]);
                 return false;
             }
 
         }
-
-        
 
     }
     
