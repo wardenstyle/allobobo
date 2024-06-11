@@ -149,6 +149,22 @@ INSERT INTO `medecin` (`id_medecin`, `nom_medecin`, `email_medecin`, `disponibil
 (2, 'Dr Who', 'who@allobobo.fr', '1','Cardiologue','images/m2.png','2'),
 (3, 'Dr House', 'franck@allobobo.fr', '1','Anesthésiste','images/m3.png','3');
 
+--
+-- Structure de la table `service_status`
+--
+
+CREATE TABLE IF NOT EXISTS service_status (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    status ENUM('active', 'inactive') NOT NULL
+);
+
+--
+-- Contenu de la table `service_status`
+--
+
+INSERT INTO service_status (id, status) VALUES (1, 'inactive');
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -2,35 +2,56 @@
 
 /** Gerer les requettes Http */
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+/** controle sur l'activation du service */
 
-include('ApiRendezvous.php');
+include('allobobo_bdd.php');
+$query = $bdd->query('SELECT status FROM service_status WHERE id = 1');
+$status = $query->fetchColumn();
 
-$rdv = new ApiRendezvous();
-$stmt = $rdv->read();
-$num = count($stmt);
+if($status == 'active') {
 
-if($num > 0) {
-    $rdv_arr = array();
-    $rdv_arr["records"] = array();
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json; charset=UTF-8");
 
-    foreach ($stmt as $key=> $value) {
-        //var_dump($value);
-        extract($value);
+    include('ApiRendezvous.php');
 
-        $rdv_item = array(
-            "id" => $id,
-            "jour" => $jour,
-            "nom" => $nom,
-            "email" => $email
-        );
+    $rdv = new ApiRendezvous();
 
-        array_push($rdv_arr["records"], $rdv_item);
+    $email = isset($_GET['email']) ? $_GET['email'] : null;
+
+    // par défaut lecture de tous les rendez-vous
+    if (!empty($email)) {
+        $stmt = $rdv->readByUser($email);
+        $stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+    } else {
+        $stmt = $rdv->read();
+        $stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    http_response_code(200);
-    echo json_encode($rdv_arr);
+    $num = count($stmt);
+
+    if($num > 0) {
+        $rdv_arr = array();
+        $rdv_arr["records"] = array();
+
+        foreach ($stmt as $key=> $value) {
+
+            extract($value);
+
+            $rdv_item = array(
+                "id" => $id,
+                "jour" => $jour,
+                "nom" => $nom,
+                "email" => $email,
+                "nom_medecin" =>$nom_medecin
+            );
+
+            array_push($rdv_arr["records"], $rdv_item);
+        }
+
+        http_response_code(200);
+        echo json_encode($rdv_arr);
 
     } else {
 
@@ -39,5 +60,13 @@ if($num > 0) {
             array("message" => "Aucun rendez-vous trouvé.")
     );
 }
+
+} else {
+    header('HTTP/1.1 503 Service Unavailable');
+    echo json_encode(['error' => 'Le service est indisponible.']);
+    exit();
+}
+
+
 
 ?>

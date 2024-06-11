@@ -11,10 +11,38 @@
 if (session_status() === PHP_SESSION_NONE) {
 	session_start();
 }
+
 if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESSION['type_compte'] == 'ADM'){
 	include('allobobo_bdd.php');
 	$requete4 = $bdd->query("SELECT * FROM user WHERE email_user='{$_SESSION['email_user']}'");
 	$nom = $requete4->fetch();
+
+	// Vérifier l'état actuel du service API
+	$query = $bdd->query('SELECT status FROM service_status WHERE id = 1');
+	$status = $query->fetchColumn();
+
+	if($status != 'active') {
+
+		$style_class = "offline";
+		$etat = "fermé";
+		$disabled="disabled";
+
+	}else{
+
+		$style_class = "online";
+		$etat = "ouvert";
+		$disabled = "";
+		// construction des URL de l'Api
+		$currentUrl = $_SERVER['PHP_SELF'];
+		// fichier actuel
+		$currentFile = basename($currentUrl);
+		// chemin actuel
+		$directoryPath = dirname($currentUrl);
+		$newFile = 'api.php';
+		// url api 
+		$newUrl = $directoryPath . '/' . $newFile;
+
+	}
 	
 ?><!doctype html>
 <html>
@@ -28,6 +56,22 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 		button.active{
 			background-color:#007bff;
 			color:white;
+		}
+		.online {
+			display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+			background-color: green;
+		}
+		.offline {
+			display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+			background-color: red;
 		}
 	</style>
 	
@@ -59,6 +103,10 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 							</li>
 							<li class="nav-item">
 								<button class="nav-link" id="lien_actif2" onclick="openTab(2)">Historique des Rendez-vous</button>
+							</li>
+
+							<li class="nav-item">
+								<button class="nav-link" id="lien_actif3" onclick="openTab(3)">Mes services <span class="<?php echo $style_class; ?>"></span></button>
 							</li>
 							</ul>
 						</div>
@@ -144,7 +192,7 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 
 							<!-- début de l'onglet hisorique -->
 
-							<div class="tab-content">
+							<div class="tab-content" style="display:none">
 								<h5 class="card-title">Historique de vos rendez-vous</h5>
 
 								<table style="padding:10px;" class="table table-striped">
@@ -197,6 +245,34 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 								</table>
 							</div>
 							<!-- fin de l'onglet hisorique -->
+
+							<!-- début de l'onglet service -->
+							<div class="tab-content" style="display:none">
+
+								<h5 class="card-title">Gestion du Web service</h5>
+								
+    							<p>Le service est actuellement : <strong><?php echo $etat; ?></strong></p>
+
+    							<form action="api_service.php" method="post">
+        							<button type="submit"><?php echo ($status == 'active') ? 'Désactiver' : 'Activer'; ?></button>
+    							</form>
+
+								<form style="text-align:left">
+
+								<div class="form-group">
+									<label for="text" style="color:black;font-family:Roboto"> Obtenir tous les rendez-vous </label>
+									<input type="text" class="form-control" disabled="<?php echo $disabled;?>" value="<?php if(isset($newUrl))echo $newUrl;?>">
+								</div>
+
+								<div class="form-group">
+									<label for="text" style="color:black;font-family:Roboto"> Obtenir les rendez-vous d'un patient </label>
+									<input type="text" class="form-control" disabled="<?php echo $disabled; ?>" value="<?php if(isset($newUrl))echo $newUrl.'?email=xxx@xxx.xx'; ?>">
+								</div>
+
+								</form>
+
+							</div>
+							<!-- fin de l'onglet service -->
 						</div>
 					</div>
 				</div>
@@ -213,27 +289,38 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 			//let btns = document.querySelectorAll("a");
 			for(let i=0; i<contents.length;i++) {
 				contents[i].style.display ="none";
-				//btns[i].classList.remove("active");
+		//		btns[i].classList.remove("active");
 			}
 			//console.log(x);
 			// tous les contenus sont display none
 			contents[x].style.display ="block";
-			//btns[x].classList.add("active");
+		//	btns[x].classList.add("active");
+
+			/** Portion de code à supprimer après les tests  */
 
 			if(x == 0) {
 				let lien_actif_0 = document.getElementById('lien_actif0').classList.add("active");
 				let lien_actif_1 = document.getElementById('lien_actif1').classList.remove("active");
 				let lien_actif_2 = document.getElementById('lien_actif2').classList.remove("active");
+				let lien_actif_3 = document.getElementById('lien_actif3').classList.remove("active");
 			}
 			if(x == 1) {
 				let lien_actif_0 = document.getElementById('lien_actif0').classList.remove("active");
 				let lien_actif_1 = document.getElementById('lien_actif1').classList.add("active");
 				let lien_actif_2 = document.getElementById('lien_actif2').classList.remove("active");
+				let lien_actif_3 = document.getElementById('lien_actif3').classList.remove("active");
 			}
 			if(x == 2) {
 				let lien_actif_0 = document.getElementById('lien_actif0').classList.remove("active");
 				let lien_actif_1 = document.getElementById('lien_actif1').classList.remove("active");
 				let lien_actif_2 = document.getElementById('lien_actif2').classList.add("active");
+				let lien_actif_3 = document.getElementById('lien_actif3').classList.remove("active");
+			}
+			if(x == 3) {
+				let lien_actif_0 = document.getElementById('lien_actif0').classList.remove("active");
+				let lien_actif_1 = document.getElementById('lien_actif1').classList.remove("active");
+				let lien_actif_2 = document.getElementById('lien_actif2').classList.remove("active");
+				let lien_actif_3 = document.getElementById('lien_actif3').classList.add("active");
 			}
 		}
 		
