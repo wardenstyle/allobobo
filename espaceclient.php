@@ -108,8 +108,10 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 								<button class="nav-link" id="lien_actif2" onclick="openTab(2)">Historique des Rendez-vous</button>
 							</li>
 
+							<?php if(isset($_SESSION['type_compte']) && $_SESSION['type_compte'] == 'ADM') {$habilitation = 'block'; }else{$habilitation ='none';} ?>
+
 							<li class="nav-item">
-								<button class="nav-link" id="lien_actif3" onclick="openTab(3)">Mes services <span class="<?php echo $style_class; ?>"></span></button>
+								<button class="nav-link" style="display:<?php echo $habilitation;?>" id="lien_actif3" onclick="openTab(3)">Mes services <span class="<?php echo $style_class; ?>"></span></button>
 							</li>
 							</ul>
 						</div>
