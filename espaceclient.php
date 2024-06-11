@@ -252,20 +252,20 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 								<h5 class="card-title">Gestion du Web service</h5>
 								
     							<p>Le service est actuellement : <strong><?php echo $etat; ?></strong></p>
-
+								
     							<form action="api_service.php" method="post">
         							<button type="submit"><?php echo ($status == 'active') ? 'Désactiver' : 'Activer'; ?></button>
     							</form>
-
+								<br />
 								<form style="text-align:left">
 
 								<div class="form-group">
-									<label for="text" style="color:black;font-family:Roboto"> Obtenir tous les rendez-vous </label>
+									<label for="text" style="color:black;font-family:Roboto"> Obtenir tous les rendez-vous (copier coller URL ci-dessous) </label>
 									<input type="text" class="form-control" disabled="<?php echo $disabled;?>" value="<?php if(isset($newUrl))echo $newUrl;?>">
 								</div>
 
 								<div class="form-group">
-									<label for="text" style="color:black;font-family:Roboto"> Obtenir les rendez-vous d'un patient </label>
+									<label for="text" style="color:black;font-family:Roboto"> Obtenir les rendez-vous d'un patient (remplacer les x par l'adresse email)</label>
 									<input type="text" class="form-control" disabled="<?php echo $disabled; ?>" value="<?php if(isset($newUrl))echo $newUrl.'?email=xxx@xxx.xx'; ?>">
 								</div>
 
