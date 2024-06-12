@@ -13,8 +13,17 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $a = "disabled"; // désactiver le bouton pour ajouter les médecins selon le profil
 $compte_admin = "(compte admin requis)"; //ajouter un médecin selon le profil
-include('allobobo_bdd.php');
-$requete = $bdd->query("SELECT * FROM medecin ");
+
+try {
+
+  include('allobobo_bdd.php');
+  $requete = $bdd->query("SELECT * FROM medecin ");
+
+} catch (PDOException $e) {
+  error_log("Erreur lors de la vérification des médecins : " . $e->getMessage());
+  header('Location: erreur.php');
+  exit();
+}
 
 ?>
 

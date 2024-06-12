@@ -43,30 +43,48 @@ if(isset($_POST['submit'])){
 		$erreur_repeat ="*Les mots de passes ne correspondent pas";
 			
 	}
-			
-	include('allobobo_bdd.php');
-	$reqmail = $bdd->prepare("SELECT * FROM user WHERE email_user =?");
-	$reqmail->execute(array($email));// requete pour empecher d'entrée deux fois la meme adresse email
-	$mailexiste = $reqmail->rowCount();
-					
-	if($mailexiste != 0) {
-		$validation = false;
-		$erreur ="Adresse émail déja utilisé";						
-	}
+    
+	try {
+
+        include('allobobo_bdd.php');
+        $reqmail = $bdd->prepare("SELECT * FROM user WHERE email_user =?");
+        $reqmail->execute(array($email));// requete pour empecher d'entrée deux fois la meme adresse email
+        $mailexiste = $reqmail->rowCount();
+                        
+        if($mailexiste != 0) {
+            $validation = false;
+            $erreur ="Adresse émail déja utilisé";						
+        }
+
+    } catch(PDOException $e) {
+        
+        error_log("Erreur lors de la vérification de l'adresse email : " . $e->getMessage());
+        header('Location: erreur.php');
+        exit();
+    }	
+
 	
 	if($validation){
-		$password = md5($password);			
-		include('allobobo_bdd.php');
-		$req = $bdd->prepare('INSERT INTO user (nom_user,email_user,mdp,type_compte) VALUES (:nom_user,:email_user,:mdp,:type_compte)');
-        //execution de la requete sql prepare
-		$req->execute(array(
+		$password = md5($password);
+        
+        try {
+            include('allobobo_bdd.php');
+		    $req = $bdd->prepare('INSERT INTO user (nom_user,email_user,mdp,type_compte) VALUES (:nom_user,:email_user,:mdp,:type_compte)');
+            //execution de la requete sql prepare
+		    $req->execute(array(
 				'nom_user' => $nom,
 				'email_user' => $email,
 				'mdp' => $password,
                 'type_compte' => 'PAT'
 								
-		));
-		$req->closeCursor();
+		    ));
+		    $req->closeCursor();
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de l'inscription de l'utilisateur : " . $e->getMessage());
+            header('Location: erreur.php');
+            exit();
+        }		
 	}		
 			
 }

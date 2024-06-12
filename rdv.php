@@ -19,131 +19,136 @@ include('allobobo_bdd.php');
 /**
  * Récupération de la liste des médecins
  */
-$requete = $bdd->query("SELECT id_medecin,nom_medecin FROM medecin ");
+try{
+	$requete = $bdd->query("SELECT id_medecin,nom_medecin FROM medecin ");
+}catch(PDOException $e) {
+	header('Location:erreur.php');
+	exit();
+}
 
-if(!empty($_POST)){
-
+if (!empty($_POST)) {
     extract($_POST);
     $validation = true;
-    
-    if($jour<10){
-        $jour = '0'.$jour;
+
+    if ($jour < 10) {
+        $jour = '0' . $jour;
     }
 
-    if($mois<10){
-        $mois = '0'.$mois;
+    if ($mois < 10) {
+        $mois = '0' . $mois;
     }
 
-    $date_unix = strtotime($annee.'-'.$mois.'-'.$jour);
-    if(($mois == '04' || $mois == '06' || $mois == '09' || $mois == '11') && ($jour == '31')){
+    $date_unix = strtotime($annee . '-' . $mois . '-' . $jour);
+    if (($mois == '04' || $mois == '06' || $mois == '09' || $mois == '11') && ($jour == '31')) {
         $validation = false;
         $erreur_date = "* Ce jour n'existe pas";
-	}elseif(($mois == '01') && ($jour > '29')){
-		$validation = false;
-		$erreur_date = "* Ce jour n'existe pas";
-	} elseif($date_unix< time()){// Date unix strto time fonction qui permet de comparer avec notre date actuel
-		$validation = false;
-		$erreur_date = "* Date incorrect. rappel: pas de rendez-vous le jour meme.";
-	}
+    } elseif (($mois == '01') && ($jour > '29')) {
+        $validation = false;
+        $erreur_date = "* Ce jour n'existe pas";
+    } elseif ($date_unix < time()) { // Date unix strto time fonction qui permet de comparer avec notre date actuel
+        $validation = false;
+        $erreur_date = "* Date incorrect. rappel: pas de rendez-vous le jour même.";
+    }
 
-	$heures_en_secondes= $heures*3600 + $minutes*60; // convertir nos heures en seconde pour pouvoir faire la condition : si il n'est pas le chreno horaire , c'est fermé
-	if((!ctype_digit($heures)) || (!ctype_digit($minutes))){//ctype_digit Fonction php qui verifie si se sont des nombres qui ont été entré dans le formulaire
-		$validation = false;
-		$erreur_heure = "* Heure invalide";
-	}elseif((($heures_en_secondes < 36000) || ($heures_en_secondes > 46800)) && (($heures_en_secondes < 50400) || ($heures_en_secondes > 77400 ))){
-		$validation = false;
-		$erreur_heure = "* Heure non comprise dans les crénaux horaires";	
-	}
+    $heures_en_secondes = $heures * 3600 + $minutes * 60; // convertir nos heures en secondes pour pouvoir faire la condition : si il n'est pas le créneau horaire, c'est fermé
+    if ((!ctype_digit($heures)) || (!ctype_digit($minutes))) { // ctype_digit Fonction php qui vérifie si ce sont des nombres qui ont été entrés dans le formulaire
+        $validation = false;
+        $erreur_heure = "* Heure invalide";
+    } elseif ((($heures_en_secondes < 36000) || ($heures_en_secondes > 46800)) && (($heures_en_secondes < 50400) || ($heures_en_secondes > 77400))) {
+        $validation = false;
+        $erreur_heure = "* Heure non comprise dans les créneaux horaires";
+    }
 
-	if ($minutes >59){
-		$validation = false;
-		$erreur_heure ="* Heure non comprise dans les crénaux horaires";	
-	}
-	
-	if(empty($nom)){
-		$validation = false;
-		$erreur_nom = "* Indiquez votre nom";
-	}
+    if ($minutes > 59) {
+        $validation = false;
+        $erreur_heure = "* Heure non comprise dans les créneaux horaires";
+    }
 
-	if(!filter_var($email,FILTER_VALIDATE_EMAIL)){ // verifier le format email
-		$validation = false;
-		$erreur_email = "* Indiquez votre adresse Email";
-	}
+    if (empty($nom)) {
+        $validation = false;
+        $erreur_nom = "* Indiquez votre nom";
+    }
 
-	if(empty($id_medecin)){
-		$validation = false;
-		$erreur_medecin = "* Veuillez séléctionner un médecin";
-	}
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // vérifier le format email
+        $validation = false;
+        $erreur_email = "* Indiquez votre adresse Email";
+    }
 
-	/**
-	* Vérification de la disponibilité du médecin pour les horaires
-	*/
+    if (empty($id_medecin)) {
+        $validation = false;
+        $erreur_medecin = "* Veuillez sélectionner un médecin";
+    }
 
-	$date_choisie =  $annee.'-'.$mois.'-'.$jour.' '.$heures.':'.$minutes.':00'; 
+    /**
+     * Vérification de la disponibilité du médecin pour les horaires
+     */
 
-	$reqdate = $bdd->prepare("SELECT jour FROM rdv WHERE jour =? AND id_medecin =?");
-	$reqdate->execute(array($date_choisie, $id_medecin));									
-	$date_result = $reqdate->rowCount();
-						
-	if($date_result != 0) {
-		$validation = false;
+    $date_choisie = $annee . '-' . $mois . '-' . $jour . ' ' . $heures . ':' . $minutes . ':00';
 
-		$erreur_creneaux = "* Médecin non disponible pour ce créneau";					
-	}else{
-		$creneau_ok = 'créneau disponible';
-	}
-	
-	if($validation){
+    try {
+        include('allobobo_bdd.php');
 
-		include('allobobo_bdd.php');
+        $reqdate = $bdd->prepare("SELECT jour FROM rdv WHERE jour =? AND id_medecin =?");
+        $reqdate->execute(array($date_choisie, $id_medecin));
+        $date_result = $reqdate->rowCount();
 
-		if($jour<10){$jour = "0".$jour;}
-		if($mois<10){$mois = "0".$mois;}
+        if ($date_result != 0) {
+            $validation = false;
+            $erreur_creneaux = "* Médecin non disponible pour ce créneau";
+        } else {
+            $creneau_ok = 'créneau disponible';
+        }
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la vérification des créneaux : " . $e->getMessage());
+        header('Location:erreur.php');
+        exit();
+    }
 
-		$annulation =time().''.$nom;
-		$req = $bdd->prepare('INSERT INTO rdv (jour,id_medecin,nom,email,annulation) VALUES (:jour,:id_medecin,:nom,:email,:annulation)');
-		$req->execute(array(
-			'jour' => $annee.'-'.$mois.'-'.$jour.' '.$heures.':'.$minutes.':00',
-			'id_medecin' => $id_medecin,
-			'nom' => $nom,
-			'email' => $email,
-			'annulation' => $annulation
-			
-		));
-		
-		// $reservationId = $bdd->lastInsertId();	
-		// $verif_email = $bdd->prepare('SELECT * FROM user WHERE email_user="'.$email.'"');
-		// $verif_email->execute();
-		// $test_email = $verif_email->fetch();
-		// if (empty($test_email)) {
-		
-		// 	$req = $bdd->prepare('INSERT INTO user (nom_user,email_user,mdp,id_rdv) VALUES (:nom_user,:email_user,:mdp,:id_rdv)');
-		// 	$req->execute(array(
-		// 		'nom_user' => $nom,
-		// 		'email_user' => $email,
-		// 		'mdp' => $password,
-		// 		'id_rdv' => $reservationId
-		// 	));
-	    // }
-		
-		$req->closeCursor();
-		$to = $email;
-		$subject ="Confirmation de votre rendez-vous";
-		$content ='Mme,Mr '.$nom.'<br />
-		Nous vous confirmons votre rendez-vous chez AlloBobo.<br />
-		<br />
-		Jour du rendez-vous :'.$jour.'/'.$mois.'/'.$annee.'  <br />
-		à : '.$heures.':'.$minutes.'      <br />
-		<br/>
-		Vous pouvez annuler le rendez-vous depuis votre espace client en cliquant sur le lien :<a href="http://allobobo.alwaysdata.net/connexion.php">Annuler le rendez-vous</a><br />
-		<br />
-		A très bientôt chez AlloBobo.
-		';
-		$headers ='MIME-version: 1.0' ."\r\n";
-		$headers . 'Content-type: text/html; charset=utf-8'. "\r\n";
-		mail($to,$subject,$content,$headers);
-			
-	}
+    if ($validation) {
+        try {
+            include('allobobo_bdd.php');
+
+            if ($jour < 10) {
+                $jour = "0" . $jour;
+            }
+            if ($mois < 10) {
+                $mois = "0" . $mois;
+            }
+
+            $annulation = time() . '' . $nom;
+            $req = $bdd->prepare('INSERT INTO rdv (jour,id_medecin,nom,email,annulation) VALUES (:jour,:id_medecin,:nom,:email,:annulation)');
+            $req->execute(array(
+                'jour' => $annee . '-' . $mois . '-' . $jour . ' ' . $heures . ':' . $minutes . ':00',
+                'id_medecin' => $id_medecin,
+                'nom' => $nom,
+                'email' => $email,
+                'annulation' => $annulation
+            ));
+
+            $req->closeCursor();
+
+            $to = $email;
+            $subject = "Confirmation de votre rendez-vous";
+            $content = 'Mme,Mr ' . $nom . '<br />
+            Nous vous confirmons votre rendez-vous chez AlloBobo.<br />
+            <br />
+            Jour du rendez-vous :' . $jour . '/' . $mois . '/' . $annee . '  <br />
+            à : ' . $heures . ':' . $minutes . '      <br />
+            <br/>
+            Vous pouvez annuler le rendez-vous depuis votre espace client en cliquant sur le lien :<a href="http://allobobo.alwaysdata.net/connexion.php">Annuler le rendez-vous</a><br />
+            <br />
+            A très bientôt chez AlloBobo.
+            ';
+            $headers = 'MIME-version: 1.0' . "\r\n";
+            $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+            mail($to, $subject, $content, $headers);
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors de l'insertion du rendez-vous : " . $e->getMessage());
+            header('Location: erreur.php');
+            exit();
+        }
+    }
 }
 ?>
 <!doctype html>
@@ -300,6 +305,10 @@ if(!empty($_POST)){
   		<!-- footer section -->
 
 	</body>
+
+	<!-- jQery & js scripts section -->
+	<?php include('mes_script.php') ?>
+	<!-- jQery & js scripts section--> 
 
 	<script type="text/javascript">
 	

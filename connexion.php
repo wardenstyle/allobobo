@@ -6,49 +6,55 @@
  * Dernière modification le : 25/05/2024
  */
 
-if(isset($_POST['submit'])) {
+ if (isset($_POST['submit'])) {
 
-	$validation = true;
-	$email_user = trim($_POST['email_user']);
+    $validation = true;
+    $email_user = trim($_POST['email_user']);
     $mdp = trim($_POST['mdp']);
 
-	// verification formulaire
-	if(!filter_var($email_user,FILTER_VALIDATE_EMAIL)){
-		$validation = false;
-		$erreur_pass = "*Veuillez indiquez votre adresse Email";
-	}
+    // verification formulaire
+    if (!filter_var($email_user, FILTER_VALIDATE_EMAIL)) {
+        $validation = false;
+        $erreur_pass = "*Veuillez indiquer votre adresse Email";
+    }
 
-	if(empty($mdp)){
-		$validation = false;
-		$erreur_mdp = "*Veuillez indiquer votre mot de passe";
-	}
+    if (empty($mdp)) {
+        $validation = false;
+        $erreur_mdp = "*Veuillez indiquer votre mot de passe";
+    }
 
-	if($validation){	
-		// requete sql pour verifier que le mot de passe et l'adresse email correspondent
-		include('allobobo_bdd.php');
-		$requser = $bdd->prepare("SELECT * FROM user WHERE email_user = ? AND mdp =? ");
-		$requser->execute(array($email_user,md5($mdp)));
-		$userexist = $requser ->rowCount();
-				
-		if($userexist==1){
-			session_start();
-			$userinfo = $requser->fetch();
-			$_SESSION['email_user'] = $userinfo['email_user'];
-			$_SESSION['type_compte'] = $userinfo['type_compte'];
-			if($userinfo['type_compte'] == 'PAT' || $userinfo['type_compte'] == 'ADM') {
-				$_SESSION['type_compte'] = $userinfo['type_compte'];
-            	header("Location: espaceclient.php?id=".$_SESSION['email_user']);
-			}else {
-				// récupérer le code_user du médecin
-				$_SESSION['code'] = $userinfo['code'];
-				header("Location: espacemedecin.php");
-			}
-		}else{
-			$erreur1 = "* adresse email ou mot de passe incorrect ";
-		}	
-	}
+    if ($validation) {
+        try {
+            // requête SQL pour vérifier que le mot de passe et l'adresse email correspondent
+            include('allobobo_bdd.php');
+            $requser = $bdd->prepare("SELECT * FROM user WHERE email_user = ? AND mdp = ?");
+            $requser->execute(array($email_user, md5($mdp)));
+            $userexist = $requser->rowCount();
 
-}?>
+            if ($userexist == 1) {
+                session_start();
+                $userinfo = $requser->fetch();
+                $_SESSION['email_user'] = $userinfo['email_user'];
+                $_SESSION['type_compte'] = $userinfo['type_compte'];
+                if ($userinfo['type_compte'] == 'PAT' || $userinfo['type_compte'] == 'ADM') {
+                    $_SESSION['type_compte'] = $userinfo['type_compte'];
+                    header("Location: espaceclient.php?id=" . $_SESSION['email_user']);
+                } else {
+                    // récupérer le code_user du médecin
+                    $_SESSION['code'] = $userinfo['code'];
+                    header("Location: espacemedecin.php");
+                }
+            } else {
+                $erreur1 = "* Adresse email ou mot de passe incorrect ";
+            }
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la connexion utilisateur : " . $e->getMessage());
+            header('Location: erreur.php');
+            exit();
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -102,5 +108,9 @@ if(isset($_POST['submit'])) {
 				</div>
 		</div>
 	</body>
+
+<!-- jQery & js scripts section -->
+	  <?php include('mes_script.php') ?>
+<!-- jQery & js scripts section--> 
 
 				
