@@ -37,16 +37,16 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
 
       /**Encodage du dernière enregistrement */
     
-    $time ??= $derniereligne['jour'];
+    $time = $derniereligne['jour'];
     if($time == null) { $time= date('Y-m-j H:i:s');}
     $time_end = strtotime("+15 minutes", strtotime($time));
     $fin_consultation = date('Y-m-j H:i:s', $time_end);
     $json1 = array();
-    $json1['event_id']??= $derniereligne['id'];
-    $json1['title'] ??= $derniereligne['nom_medecin'].'-'.$derniereligne['nom'];
+    $json1['event_id'] = $derniereligne['id'];
+    $json1['title'] = $derniereligne['nom_medecin'].'-'.$derniereligne['nom'];
     $json1['start'] = $time;
     $json1['end'] = $fin_consultation;
-    $json1['url'] ??= 'http://allobobo.alwaysdata.net/annulation.php?id_rdv='.$derniereligne['id'];
+    $json1['url'] = 'http://allobobo.alwaysdata.net/annulation.php?id_rdv='.$derniereligne['id'];
     $tab2 = json_encode($json1);
 
     echo "<input type='hidden' style='display:none' id='derniereligne' value='$tab2'>";
