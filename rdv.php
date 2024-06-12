@@ -150,7 +150,7 @@ if(!empty($_POST)){
 <html>
 	<?php include('header.php') ?>
 
-	<script src="js/jquery-3.4.1.js" type="text/javascript"></script>
+	<script src="js/jquery-3.4.1.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 	<script type="text/javascript" src="monajax.js"></script>
 

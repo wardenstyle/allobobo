@@ -36,10 +36,13 @@ $(".client_owl-carousel").owlCarousel({
 
 
 
-/** google_map js **/
+/** google_map js
+ * Lille Latitude, Longitude 
+ * 
+ * **/
 function myMap() {
     var mapProp = {
-        center: new google.maps.LatLng(40.712775, -74.005973),
+        center: new google.maps.LatLng(50.633333, 3.066667),
         zoom: 18,
     };
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
