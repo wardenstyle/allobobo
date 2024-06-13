@@ -8,6 +8,23 @@ if (session_status() === PHP_SESSION_NONE) {
 	session_start();
   }
 
+/** Gestion des Url  */
+
+// obtenir l'adresse courante de la page  */
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+// Obtenir le nom de domaine
+$domainName = $_SERVER['HTTP_HOST'];
+
+// Obtenir le chemin de la requête
+$requestUri = $_SERVER['REQUEST_URI'];
+
+// Construire l'URL complète
+$currentUrl = $protocol . $domainName . $requestUri;
+
+$newUrl = str_replace('/ajout_medecin.php', '/medecin.php', $currentUrl);
+/** fin de l'url  */
+
 if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']== 'ADM') {
 
 	if(isset($_POST['submit'])){
@@ -81,7 +98,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']== 'ADM') {
 			header('Location: medecin.php');
 
 		} else {
-			echo "<a href='http://allobobo.alwaysdata.net/medecin.php'>recommencer la saisie</a>";
+			echo "<a href='$newUrl'>recommencer la saisie</a>";
 		}		
 				
 	}

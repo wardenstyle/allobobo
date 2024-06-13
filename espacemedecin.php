@@ -175,7 +175,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
                                                 echo $jour[8].''.$jour[9].'/'.$jour[5].''.$jour[6].'/'.$jour[0].''.$jour[1].''.$jour[2].''.$jour[3].' à ' .$jour[11].''.$jour[12].':'.$jour[14].''.$jour[15];
                                                 ?></td>												
                                                 <td><?php echo $row['nom'];?></td>																	
-                                                <td><a href='<?php if(isset($new_url))echo $new_url.'?id_rdv='.$row['id'] ?>'>Annuler</td>							
+                                                <td><a href='<?php if(isset($new_url)){echo $new_url.'?id_rdv='.$row['id'];}else{ echo $newUrl.'?id_rdv='.$row['id']; } ?>'>Annuler</td>							
                                             </tr>
                                 <?php
                                     }	
