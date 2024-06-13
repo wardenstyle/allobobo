@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `rdv` (
 INSERT INTO `rdv` (`id`, `jour`, `id_medecin`, `nom`, `email`, `annulation`) VALUES
 (24, '2024-05-27 20:00:00', 1, 'Papa', 'admin@allobobo.fr', '1459620557admin'),
 (25, '2024-05-16 19:31:00', 3, 'Manan', 'admin@allobobo.fr', '1459620814admin'),
-(26, '2024-08-13 19:45:00', 2, 'Admin', 'admin@allobobo.fr', '1459620814admin'),
+(26, '2024-08-14 19:45:00', 2, 'Admin', 'admin@allobobo.fr', '1459620814admin'),
 (27, '2024-06-02 19:31:00', 1, 'richard', 'richard@allobobo.fr', '1459621349richard'),
 
 (28, '2024-06-01 20:00:00', 1, 'david', 'david@allobobo.fr', '1459620557david'),
