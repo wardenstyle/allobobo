@@ -12,6 +12,23 @@ if (session_status() === PHP_SESSION_NONE) {
 	session_start();
 }
 
+/** Gérer l'annulation  */
+
+// obtenir l'adresse courante de la page  */
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+// Obtenir le nom de domaine
+$domainName = $_SERVER['HTTP_HOST'];
+
+// Obtenir le chemin de la requête
+$requestUri = $_SERVER['REQUEST_URI'];
+
+// Construire l'URL complète
+$currentUrl = $protocol . $domainName . $requestUri;
+
+$urlAnnulation = str_replace('/espaceclient.php', '/annulation.php', $currentUrl);
+/** fin annulation  */
+
 if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESSION['type_compte'] == 'ADM'){
 	include('allobobo_bdd.php');
 	$requete4 = $bdd->query("SELECT * FROM user WHERE email_user='{$_SESSION['email_user']}'");
@@ -33,18 +50,8 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 		$etat = "ouvert";
 		$disabled = "";
 		// construction des URL de l'Api
-		$currentUrl = $_SERVER['PHP_SELF'];
-		// fichier actuel
-		$currentFile = basename($currentUrl);
-		// chemin actuel
-		$directoryPath = dirname($currentUrl);
-		$newFile = 'api.php';
-		// url api 
-		//$newUrl = $directoryPath . '/' . $newFile;
-		$oldPart = 'espaceclient.php';
-		$newPart = 'api.php';
-		$newUrl = str_replace($oldPart, $newPart, $currentUrl);
-
+		$urlApi = str_replace('/espaceclient.php', '/api.php', $currentUrl);
+	
 	}
 	
 ?><!doctype html>
@@ -178,7 +185,7 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 											<td><?php echo $row['nom'];?></td>									
 											<td><?php echo $row['nom_medecin']; ?></td>
 											<td><?php echo $row['specialite']; ?></td>									
-											<td><a href='http://allobobo.alwaysdata.net/annulation.php?id_rdv=<?php echo $row['id'] ?>'>Annuler</td>							
+											<td><a href='<?php if(isset($urlAnnulation)) echo $urlAnnulation.'?id_rdv='.$row['id']; ?>'>Annuler</td>							
 										</tr>
 							<?php
 								}	
@@ -266,12 +273,12 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 
 								<div class="form-group">
 									<label for="text" style="color:black;font-family:Roboto"> Obtenir tous les rendez-vous (copier coller URL ci-dessous) </label>
-									<input type="text" class="form-control" disabled="<?php echo $disabled;?>" value="allobobo.alwaysdata.net/api.php">
+									<input type="text" class="form-control" disabled="<?php echo $disabled;?>" value="<?php if(isset($urlApi))echo $urlApi;?>">
 								</div>
 
 								<div class="form-group">
-									<label for="text" style="color:black;font-family:Roboto"> Obtenir les rendez-vous d'un patient (remplacer par l'adresse email du patient)</label>
-									<input type="text" class="form-control" disabled="<?php echo $disabled; ?>" value="allobobo.alwaysdata.net/api.php?email=admin@allobobo.fr">
+									<label for="text" style="color:black;font-family:Roboto"> Obtenir les rendez-vous d'un patient (remplacez l'adresse email par celle du patient souhaité)</label>
+									<input type="text" class="form-control" disabled="<?php echo $disabled; ?>" value="<?php if(isset($urlApi))echo $urlApi.'?email='.$_SESSION['email_user'];?>">
 								</div>
 
 								</form>

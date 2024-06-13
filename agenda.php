@@ -9,6 +9,23 @@ if (session_status() === PHP_SESSION_NONE) {
 	session_start();
 }
 
+/** Gérer l'annulation  */
+
+// obtenir l'adresse courante de la page  */
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+// Obtenir le nom de domaine
+$domainName = $_SERVER['HTTP_HOST'];
+
+// Obtenir le chemin de la requête
+$requestUri = $_SERVER['REQUEST_URI'];
+
+// Construire l'URL complète
+$currentUrl = $protocol . $domainName . $requestUri;
+
+$newUrl = str_replace('/agenda.php', '/annulation.php', $currentUrl);
+/** fin annulation  */
+
 if(isset($_SESSION['type_compte']) && $_SESSION['type_compte'] =='ADM') {
 
   include('allobobo_bdd.php');
@@ -31,7 +48,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte'] =='ADM') {
   $json1['title'] = $derniereligne['nom_medecin'].'-'.$derniereligne['nom'];
   $json1['start'] = $time;
   $json1['end'] = $fin_consultation;
-  $json1['url'] = 'http://allobobo.alwaysdata.net/annulation.php?id_rdv='.$derniereligne['id'];
+  $json1['url'] = $newUrl.'?id_rdv='.$derniereligne['id'];
   $tab2 = json_encode($json1);
 
   echo "<input type='hidden' style='display:none' id='derniereligne' value='$tab2'>";
@@ -51,7 +68,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte'] =='ADM') {
       $json['title'] = $value['nom_medecin'].'-'.$value['nom'];
       $json['start'] = $selectedTime;
       $json['end'] = $date_fin;
-      $json['url'] = 'http://allobobo.alwaysdata.net/annulation.php?id_rdv='.$value['id'];
+      $json['url'] = $newUrl.'?id_rdv='.$value['id'];
       $tab = json_encode($json);
       //echo $i;
   

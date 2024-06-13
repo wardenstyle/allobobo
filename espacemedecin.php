@@ -10,7 +10,24 @@
 if (session_status() === PHP_SESSION_NONE) {
 	session_start();
 }
-//var_dump($_SESSION);
+
+/** Gérer l'annulation  */
+
+// obtenir l'adresse courante de la page  */
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+// Obtenir le nom de domaine
+$domainName = $_SERVER['HTTP_HOST'];
+
+// Obtenir le chemin de la requête
+$requestUri = $_SERVER['REQUEST_URI'];
+
+// Construire l'URL complète
+$currentUrl = $protocol . $domainName . $requestUri;
+
+$newUrl = str_replace('/espacemedecin.php', '/annulation.php', $currentUrl);
+/** fin annulation  */
+
 if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
 
     if(isset($_SESSION['email_user'])){
@@ -123,6 +140,28 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
                                 "SELECT * FROM rdv INNER JOIN medecin ON medecin.id_medecin = rdv.id_medecin 
                                 WHERE code_user='{$_SESSION['code']}' AND jour > NOW() ORDER BY jour ASC LIMIT $premiereEntree,$ligne_par_page");
                                 
+                                /** annulation : parsage de l'url */
+
+                                // Parse l'URL en ses composants
+                                $url_components = parse_url($newUrl);
+
+                                if (isset($url_components['query'])) {
+                                    // Parse les paramètres de la query string en un tableau associatif
+                                    parse_str($url_components['query'], $params);
+                                
+                                    // Supprime le paramètre 'page' s'il existe
+                                    unset($params['page']);
+                                
+                                    // Reconstruit la query string sans le paramètre 'page'
+                                    $new_query_string = http_build_query($params);
+                                
+                                    // Reconstruit l'URL complet avec la nouvelle query string
+                                    $new_url = $url_components['scheme'] . '://' . $url_components['host'] . $url_components['path']  .$new_query_string;
+                                
+                                    // echo "URL originale : " . $newUrl . "<br>";
+                                    // echo "URL modifiée : " . $new_url;
+                                }
+
                                 // affichage des données
 
                                 if($nb_rdv > 0) {
@@ -136,7 +175,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
                                                 echo $jour[8].''.$jour[9].'/'.$jour[5].''.$jour[6].'/'.$jour[0].''.$jour[1].''.$jour[2].''.$jour[3].' à ' .$jour[11].''.$jour[12].':'.$jour[14].''.$jour[15];
                                                 ?></td>												
                                                 <td><?php echo $row['nom'];?></td>																	
-                                                <td><a href='http://allobobo.alwaysdata.net/annulation.php?id_rdv=<?php echo $row['id'] ?>'>Annuler</td>							
+                                                <td><a href='<?php if(isset($new_url))echo $new_url.'?id_rdv='.$row['id'] ?>'>Annuler</td>							
                                             </tr>
                                 <?php
                                     }	
@@ -199,7 +238,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
                                                         echo $jour[8].''.$jour[9].'/'.$jour[5].''.$jour[6].'/'.$jour[0].''.$jour[1].''.$jour[2].''.$jour[3].' à ' .$jour[11].''.$jour[12].':'.$jour[14].''.$jour[15];
                                                         ?></td>												
                                                         <td><?php echo $row['nom'];?></td>																	
-                                                        <td><a href='http://allobobo.alwaysdata.net/annulation.php?id_rdv=<?php echo $row['id'] ?>'>Annuler</td>							
+                                                        <td><a href='<?php if(isset($new_url)) echo $new_url.'?id_rdv='.$row['id'] ?>'>Annuler</td>							
                                                     </tr>
                                         <?php
                                             }	

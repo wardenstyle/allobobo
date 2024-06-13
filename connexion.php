@@ -38,7 +38,7 @@
                 $_SESSION['type_compte'] = $userinfo['type_compte'];
                 if ($userinfo['type_compte'] == 'PAT' || $userinfo['type_compte'] == 'ADM') {
                     $_SESSION['type_compte'] = $userinfo['type_compte'];
-                    header("Location: espaceclient.php?id=" . $_SESSION['email_user']);
+                    header("Location: espaceclient.php");
                 } else {
                     // récupérer le code_user du médecin
                     $_SESSION['code'] = $userinfo['code'];
