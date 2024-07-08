@@ -39,7 +39,6 @@ function ab_bd_install() {
         // Inclure les fichiers requis
         require_once('database_schema.php');
         require_once('database_data.php');
-        require_once('database_upgrade.php');
 
         // Exécuter le schéma de la base de données
         $sql = ab_get_db_schema();
