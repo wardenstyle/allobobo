@@ -1,6 +1,6 @@
 <?php 
 
-class wd_allobobo_db {
+class AlloboboDatabase {
 
     public $prefix = '';
 

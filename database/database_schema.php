@@ -1,6 +1,9 @@
 <?php
 
-function pl_get_db_schema() {
+/**
+ * creation des tables
+ */
+function ab_get_db_schema() {
     global $ab_db;
 
     /**
@@ -70,4 +73,12 @@ $charset_collate;
 ";
 
     return $ab_tables;
+}
+
+
+/** Les ALTER TABLES */
+function ab_get_db_schema() {
+
+    return $ab_alter_tables;
+
 }
