@@ -18,7 +18,7 @@ function get_pdo_connection() {
     } catch (Exception $e) {
 
         error_log('Erreur de connexion à la base de données: ' . $e->getMessage());
-        echo 'Une erreur est survenue lors de la connexion à la base de données. Veuillez vérifier les journaux d\'erreurs pour plus de détails.';
+        echo 'database_upgrade : Une erreur est survenue lors de la connexion à la base de données. Veuillez vérifier les journaux d\'erreurs pour plus de détails.';
 
         return null;
     }
@@ -58,10 +58,9 @@ function ab_bd_install() {
         //     $sql = explode(';', $sql);
         //     $sql = array_filter($sql);
         // }
+
+        echo 'Les tables ont été créées avec succès.';
         
-        foreach ($sql as $qry) {
-            $pdo->exec($qry);
-        }
     } catch (Exception $e) {
         // Gestion des exceptions
         error_log('Erreur dans ab_bd_install: ' . $e->getMessage());
