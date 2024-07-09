@@ -32,22 +32,23 @@ class AlloboboDatabase {
         require_once( 'database_fields.php' );
     }
 
-    public function set_prefix( $prefix) {
-
-        if ( preg_match( '|[^a-z0-9_]|i', $prefix ) ) {
-            return throw new InvalidArgumentException('Le préfixe doit être une chaîne de caractères valide.');
+/**
+ * met à jour les tables en fonction du nouveau prefixe
+ */
+    public function set_prefix($prefix) {
+        if (preg_match('|[^a-z0-9_]|i', $prefix)) {
+            throw new InvalidArgumentException('Le préfixe doit être une chaîne de caractères valide.');
         }
 
-        $old_prefix = $prefix;
-
+        $old_prefix = $this->prefix;
         $this->prefix = $prefix;
 
-        foreach ( $this->tables() as $table => $prefixed_table ) {
+        foreach ($this->tables() as $table => $prefixed_table) {
             $this->$table = $prefixed_table;
         }
 
-        // Réinit
-        $this->fields =  null;
+        // Réinitialiser les champs
+        $this->fields = null;
         
         return $old_prefix;
     }
