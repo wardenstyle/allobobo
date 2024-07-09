@@ -6,6 +6,7 @@ class AlloboboDatabase {
 
     // Attention à l'ordre des tables à cause des contraintes, classer dans l'ordre pour la suppression des tables
     // Prendre l'ordre inverser de la création des contraintes
+    
     public $tables = array(	
 
         'rendez_vous',		

@@ -79,6 +79,3 @@ function check_and_run_install() {
         echo 'init.php : Une erreur est survenue. Veuillez vérifier les journaux d\'erreurs pour plus de détails.';
     }
 }
-
-// Exécuter la vérification et éventuellement l'installation
-check_and_run_install();

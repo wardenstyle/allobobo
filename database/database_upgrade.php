@@ -104,7 +104,12 @@ function ab_db_uninstall() {
             $pdo->exec("DROP TABLE IF EXISTS `$table`");
         }
 
-        echo "Les tables ont été supprimées avec succès.";
+        // Supprimer le fichier installed.lock
+        if (file_exists('installed.lock')) {
+                unlink('installed.lock');
+        }
+        
+        echo "Les tables ont été supprimées avec succès et le fichier de verrouillage a été supprimé.";
 
     } catch (Exception $e) {
 
