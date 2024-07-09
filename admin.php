@@ -29,6 +29,12 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
         check_and_run_install();
     } elseif (isset($_POST['uninstall'])) {
         ab_db_uninstall();
+    } elseif (isset($_POST['unlock'])) {
+        // Supprimer le fichier de verrouillage
+        if (file_exists('installed.lock')) {
+            unlink('installed.lock');
+        echo 'le fichier de verrouillage a été supprimé.';
+    }
     }
 } else {
     //echo isset($error) ? $error : '';
@@ -43,6 +49,9 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
     <script type="text/javascript">
         function confirmUninstall() {
             return confirm('Êtes-vous sûr de vouloir désinstaller ? Cette action est irréversible.');
+        }
+        function confirmUnlock() {
+            return confirm('Attention ! supprimer le fichier de vérouillage permettra une nouvelle installation dans laquelle vous perdrez toutes les données.');
         }
     </script>
     <style>
@@ -97,6 +106,7 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
                                     <p class="card-text">Installer ou désinstaller la base de données du site.</p>
                                     <button type="submit" name="install" class="btn btn-primary mx-2">Installer</button>
                                     <button type="submit" name="uninstall" class="btn btn-danger mx-2" onclick="return confirmUninstall();">Désinstaller</button>
+                                    <button type="submit" name="unlock" class="btn btn-warning" onclick="return confirmUnlock();">Déverouiller</button>
 
                                 </div>
                             </div>
