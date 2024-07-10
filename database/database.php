@@ -9,8 +9,8 @@ class AlloboboDatabase {
     
     public $tables = array(	
 
-        'rendez_vous',		
-        'utilisateur',
+        'rdv',		
+        'user',
         'medecin',
         'service_status',
 
@@ -21,15 +21,16 @@ class AlloboboDatabase {
     private $fields;
 
     // Les noms des tables
-    public $rendez_vous;
-    public $utilisateur; 
+    public $rdv;
+    public $user; 
     public $medecin; 
     public $service_status;
 
 
     public function __construct( ) {
-        
-        $this->set_prefix("ab_");
+        // prefixe desactive temporairement
+    //    $this->set_prefix("ab_");
+    $this->set_prefix("");
         require_once( 'database_fields.php' );
     }
 
@@ -37,9 +38,9 @@ class AlloboboDatabase {
  * met à jour les tables en fonction du nouveau prefixe
  */
     public function set_prefix($prefix) {
-        if (preg_match('|[^a-z0-9_]|i', $prefix)) {
-            throw new InvalidArgumentException('Le préfixe doit être une chaîne de caractères valide.');
-        }
+        //if (preg_match('|[^a-z0-9_]|i', $prefix)) {
+        //    throw new InvalidArgumentException('Le préfixe doit être une chaîne de caractères valide.');
+        //}
 
         $old_prefix = $this->prefix;
         $this->prefix = $prefix;

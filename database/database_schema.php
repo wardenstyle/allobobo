@@ -10,7 +10,7 @@ function ab_get_db_schema() {
 
     // Tables spécifiques
     $ab_tables = [
-        "CREATE TABLE $ab_db->rendez_vous (
+        "CREATE TABLE $ab_db->rdv (
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
             jour datetime NOT NULL,
             id_medecin INT NOT NULL,
@@ -19,7 +19,7 @@ function ab_get_db_schema() {
             annulation VARCHAR(50) NOT NULL
         ) $charset_collate",
         
-        "CREATE TABLE $ab_db->utilisateur (
+        "CREATE TABLE $ab_db->user (
             code INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
             nom_user VARCHAR(50) NOT NULL,
             email_user VARCHAR(50) NOT NULL,

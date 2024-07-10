@@ -3,7 +3,7 @@
 // initialisation des champs
 $this->init_fields = array(
 
-	'rendez_vous' =>
+	'rdv' =>
 		array(
 			'id' => array('type'=>'number', 'autoinc' => true, 'key' => true),
 			'jour' => array('type'=>'date'),
@@ -12,7 +12,7 @@ $this->init_fields = array(
             'email' => array('type' => 'string'),
             'annulation' => array('type' => 'string'),
 		),
-	'utilisateur' =>
+	'user' =>
 		array(
 			'code' => array('type'=>'number', 'autoinc' => true, 'key' => true),
 			'nom_user' => array('type' => 'string'),
