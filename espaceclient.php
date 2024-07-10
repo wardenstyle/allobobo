@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 	session_start();
 }
 
-/** Gérer l'annulation  */
+/** Gestion des url  */
 
 // obtenir l'adresse courante de la page  */
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -26,33 +26,46 @@ $requestUri = $_SERVER['REQUEST_URI'];
 // Construire l'URL complète
 $currentUrl = $protocol . $domainName . $requestUri;
 
+// url pour annulation 
 $urlAnnulation = str_replace('/espaceclient.php', '/annulation.php', $currentUrl);
-/** fin annulation  */
+
+// url pour administration 
+$urlAdministration = str_replace('/espaceclient.php', '/admin.php', $currentUrl);
+
+/** fin gestion des url  */
 
 if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESSION['type_compte'] == 'ADM'){
-	include('allobobo_bdd.php');
-	$requete4 = $bdd->query("SELECT * FROM user WHERE email_user='{$_SESSION['email_user']}'");
-	$nom = $requete4->fetch();
 
-	// Vérifier l'état actuel du service API
-	$query = $bdd->query('SELECT status FROM service_status WHERE id = 1');
-	$status = $query->fetchColumn();
+	try {
+		include('allobobo_bdd.php');
+		$requete4 = $bdd->query("SELECT * FROM user WHERE email_user='{$_SESSION['email_user']}'");
+		$nom = $requete4->fetch();
 
-	if($status != 'active') {
+		// Vérifier l'état actuel du service API
+		$query = $bdd->query('SELECT status FROM service_status WHERE id = 1');
+		$status = $query->fetchColumn();
 
-		$style_class = "offline";
-		$etat = "fermé";
-		$disabled="disabled";
+		if($status != 'active') {
 
-	}else{
+			$style_class = "offline";
+			$etat = "fermé";
+			$disabled="disabled";
 
-		$style_class = "online";
-		$etat = "ouvert";
-		$disabled = "";
-		// construction des URL de l'Api
-		$urlApi = str_replace('/espaceclient.php', '/api.php', $currentUrl);
-	
+		}else{
+
+			$style_class = "online";
+			$etat = "ouvert";
+			$disabled = "";
+			// construction des URL de l'Api
+			$urlApi = str_replace('/espaceclient.php', '/api.php', $currentUrl);
+		
+		}
+	} catch (PDOException $e) {
+		error_log("Erreur accès a la table utilisateur : " . $e->getMessage());
+		header('Location: erreur.php');
+		exit();
 	}
+	
 	
 ?><!doctype html>
 <html>
@@ -282,6 +295,10 @@ if(isset($_SESSION['email_user']) && $_SESSION['type_compte'] == 'PAT' || $_SESS
 								</div>
 
 								</form>
+
+								<h5 class="card-title">Gestion de la base de données</h5>
+								
+    							<p><a href="<?php echo $urlAdministration;?>">Administration</a></p>
 
 							</div>
 							<!-- fin de l'onglet service -->

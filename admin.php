@@ -23,7 +23,7 @@ if (isset($_GET['logout'])) {
 }
 
 // Vérifier si l'utilisateur est authentifié
-if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
+if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] || isset($_SESSION['type_compte']) && $_SESSION['type_compte'] == 'ADM' ) {
     if (isset($_POST['install'])) {
         // Exécuter la vérification et éventuellement l'installation
         check_and_run_install();
@@ -93,7 +93,7 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
     <div class="row justify-content-center">
         <div class="col-md-10">
 
-            <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) : ?>
+            <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] || isset($_SESSION['type_compte']) && $_SESSION['type_compte'] == 'ADM') : ?>
 
                 <div class="d-flex justify-content-between">
 

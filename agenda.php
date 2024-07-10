@@ -82,12 +82,9 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte'] =='ADM') {
       $error_rdv = '<center><p style="color:white">aucun rendez-vous enregistrés</p></center>';
     }
     
-
-
-
-
   } catch (PDOException $e) {
       error_log("Erreur lors de la vérification rendez-vous : " . $e->getMessage());
+      header('Location: erreur.php');
       echo 'impossible de récuperer les rendez-vous';
     exit();
   }
