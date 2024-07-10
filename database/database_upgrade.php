@@ -44,13 +44,11 @@ function ab_bd_install() {
         $sql = ab_get_db_schema();
         dbDelta($pdo, $sql);  // Adapter dbDelta pour utiliser PDO
 
-        // Executer les insertions de donnees ( a venir )
-        // $file = 'database_data.php';
-        // if (file_exists($file)) {
-        //     require_once('database_data.php');
-        //     $sql = ab_get_data();
-        //     dbDelta($pdo, $sql);
-        // }
+        //Executer les insertions de donnees
+
+        $sql = ab_get_data();
+        dbDelta($pdo, $sql);
+
 
         // Executer les insertions des cles etrangeres du schéma ( a venir )
         // $sql = pl_get_alter_schema();

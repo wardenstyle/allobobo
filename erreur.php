@@ -40,7 +40,7 @@ $urlAdmin = str_replace('/erreur.php', '/admin.php', $currentUrl);
                     <div class="col-md-6">
                         <h3 style="color:white;font-family:Roboto">Site temporairement inaccessible</h3>
                         <p style="color:white;font-family:Roboto">Nous sommes désolés, mais le site rencontre actuellement des problèmes techniques.
-                        Veuillez réessayer ultérieurement.</p><small style="color:white">êtes-vous un administrateur du site ? c'est par <a href="<?php echo $urlAdmin;?>">ici</a> </small> 
+                        Veuillez réessayer ultérieurement.</p><small style="color:white">êtes-vous un administrateur du site ? c'est par <a style="color: red;" href="<?php echo $urlAdmin;?>">ici</a> </small> 
                 </div>
             </div>  
         </div>

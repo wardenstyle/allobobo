@@ -99,8 +99,8 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
 
                     <form method="POST" class="form-inline">
                         <div class="form-group">
-                            <div class="card" style="width: 28rem">
-                                <img class="card-img-top" src="images/db.png" width="5%" height="5%" alt="Card image cap">
+                            <div class="card" style="width: 15rem">
+                                <img class="card-img-top" src="images/db_1.png" alt="Card image cap">
                                 <div class="card-body">
                                     <h5 class="card-title">Base de données</h5>
                                     <p class="card-text">Installer ou désinstaller la base de données du site.</p>
@@ -115,8 +115,8 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
 
                     <form class="form-inline">
                         <div class="form-group">
-                            <div class="card" style="width: 28rem">
-                                <img class="card-img-top" src="images/pl.WEBP" width="5%" height="5%" alt="Card image cap">
+                            <div class="card" style="width: 15rem">
+                                <img class="card-img-top" src="images/pl.WEBP" alt="Card image cap">
                                 <div class="card-body">
                                     <h5 class="card-title">Plug-in & Extension (à venir)</h5>
                                     <p class="card-text">Installer ou désinstaller les plug-in. </p>

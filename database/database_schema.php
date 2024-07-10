@@ -8,7 +8,7 @@ function ab_get_db_schema() {
 
     $charset_collate = get_charset_collate();
 
-    // Tables spécifiques au blog
+    // Tables spécifiques
     $ab_tables = [
         "CREATE TABLE $ab_db->rendez_vous (
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
