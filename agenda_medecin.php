@@ -27,6 +27,8 @@ $newUrl = str_replace('/agenda_medecin.php', '/annulation.php', $currentUrl);
 
 if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
 
+  try {
+
     include('allobobo_bdd.php');
 
     /**récupérer les rendez-vous du médecin */
@@ -51,46 +53,64 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
     $i=0;
     echo "<input type='hidden' style='display:none' id='nb_rdv' value='$nb_rdv'>";
 
-      /**Encodage du dernière enregistrement */
-    
-    $time = $derniereligne['jour'];
-    if($time == null) { $time= date('Y-m-j H:i:s');}
-    $time_end = strtotime("+15 minutes", strtotime($time));
-    $fin_consultation = date('Y-m-j H:i:s', $time_end);
-    $json1 = array();
-    $json1['event_id'] = $derniereligne['id'];
-    $json1['title'] = $derniereligne['nom_medecin'].'-'.$derniereligne['nom'];
-    $json1['start'] = $time;
-    $json1['end'] = $fin_consultation;
-    $json1['url'] = $newUrl.'?id_rdv='.$derniereligne['id'];
-    $tab2 = json_encode($json1);
+    if($nb_rdv !=0) {
 
-    echo "<input type='hidden' style='display:none' id='derniereligne' value='$tab2'>";
-
-    /**
-     * Encodage de tous les autres enregistrement
-     * la date de fin = date du jour + 15 minutes 
-     * */
-
-    foreach($resultat as $key=>$value) 
-    {
-    $i++;
-    $selectedTime = $value['jour'];
-    $endTime = strtotime("+15 minutes", strtotime($selectedTime));
-    $date_fin = date('Y-m-j H:i:s', $endTime);
+        /**Encodage du dernière enregistrement */
     
-        $json = array();
-        $json['event_id']=$value['id'];
-        $json['title'] = $value['nom_medecin'].'-'.$value['nom'];
-        $json['start'] = $selectedTime;
-        $json['end'] = $date_fin;
-        $json['url'] = $newUrl.'?id_rdv='.$value['id'];
-        $tab = json_encode($json);
-        //echo $i;
-    
-        echo "<input type='hidden' style='display:none' id='ma$i'value='$tab'>";
+      $time = $derniereligne['jour'];
+      if($time == null) { $time= date('Y-m-j H:i:s');}
+      $time_end = strtotime("+15 minutes", strtotime($time));
+      $fin_consultation = date('Y-m-j H:i:s', $time_end);
+      $json1 = array();
+      $json1['event_id'] = $derniereligne['id'];
+      $json1['title'] = $derniereligne['nom_medecin'].'-'.$derniereligne['nom'];
+      $json1['start'] = $time;
+      $json1['end'] = $fin_consultation;
+      $json1['url'] = $newUrl.'?id_rdv='.$derniereligne['id'];
+      $tab2 = json_encode($json1);
+
+      echo "<input type='hidden' style='display:none' id='derniereligne' value='$tab2'>";
+
+      /**
+       * Encodage de tous les autres enregistrement
+       * la date de fin = date du jour + 15 minutes 
+       * */
+
+      foreach($resultat as $key=>$value) 
+      {
+      $i++;
+      $selectedTime = $value['jour'];
+      $endTime = strtotime("+15 minutes", strtotime($selectedTime));
+      $date_fin = date('Y-m-j H:i:s', $endTime);
+      
+          $json = array();
+          $json['event_id']=$value['id'];
+          $json['title'] = $value['nom_medecin'].'-'.$value['nom'];
+          $json['start'] = $selectedTime;
+          $json['end'] = $date_fin;
+          $json['url'] = $newUrl.'?id_rdv='.$value['id'];
+          $tab = json_encode($json);
+          //echo $i;
+      
+          echo "<input type='hidden' style='display:none' id='ma$i'value='$tab'>";
+      }
+
+    } else {
+
+      $error_rdv = '<center><p style="color:white">aucun rendez-vous enregistrés</p></center>';
+
     }
-    ?>
+  } catch (PDOException $e) {
+
+      error_log("Erreur lors de la vérification rendez-vous : " . $e->getMessage());
+      header('Location: erreur.php');
+      echo 'impossible de récuperer les rendez-vous';
+      exit();
+  }
+
+
+    
+?>
 
 <!DOCTYPE html>
        
@@ -246,6 +266,7 @@ if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
                                <div id='calendar'></div>
                                
                        </div>
+                       <?php if(isset($error_rdv)) echo $error_rdv;?>
            </div>
                <?php include('mes_script.php') ?>
          </body>

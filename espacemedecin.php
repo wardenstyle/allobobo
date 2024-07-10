@@ -31,12 +31,23 @@ $newUrl = str_replace('/espacemedecin.php', '/annulation.php', $currentUrl);
 if(isset($_SESSION['type_compte']) && $_SESSION['type_compte']=='MDC') {
 
     if(isset($_SESSION['email_user'])){
-        include('allobobo_bdd.php');
-        // récupérer les info du médecin
-        $requete4 = $bdd->query(
-        "SELECT * FROM user INNER JOIN medecin ON user.code = medecin.code_user WHERE medecin.code_user='{$_SESSION['code']}'");
-        $nom = $requete4->fetch();
-        
+
+        try {
+
+           include('allobobo_bdd.php');
+            // récupérer les info du médecin
+            $requete4 = $bdd->query(
+            "SELECT * FROM user INNER JOIN medecin ON user.code = medecin.code_user WHERE medecin.code_user='{$_SESSION['code']}'");
+            $nom = $requete4->fetch(); 
+
+        }catch (PDOException $e) {
+
+            error_log("Erreur accès a la table medecin : " . $e->getMessage());
+            header('Location: erreur.php');
+            exit();
+	}
+            
+            
     ?><!doctype html>
     <html>
 

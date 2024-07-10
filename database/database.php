@@ -1,0 +1,99 @@
+<?php 
+
+class AlloboboDatabase {
+
+    public $prefix = '';
+
+    // Attention à l'ordre des tables à cause des contraintes, classer dans l'ordre pour la suppression des tables
+    // Prendre l'ordre inverser de la création des contraintes
+    
+    public $tables = array(	
+
+        'rdv',		
+        'user',
+        'medecin',
+        'service_status',
+
+    );
+
+    // Les champs
+    private $init_fields;
+    private $fields;
+
+    // Les noms des tables
+    public $rdv;
+    public $user; 
+    public $medecin; 
+    public $service_status;
+
+
+    public function __construct( ) {
+        // prefixe desactive temporairement
+    //    $this->set_prefix("ab_");
+    $this->set_prefix("");
+        require_once( 'database_fields.php' );
+    }
+
+/**
+ * met à jour les tables en fonction du nouveau prefixe
+ */
+    public function set_prefix($prefix) {
+        //if (preg_match('|[^a-z0-9_]|i', $prefix)) {
+        //    throw new InvalidArgumentException('Le préfixe doit être une chaîne de caractères valide.');
+        //}
+
+        $old_prefix = $this->prefix;
+        $this->prefix = $prefix;
+
+        foreach ($this->tables() as $table => $prefixed_table) {
+            $this->$table = $prefixed_table;
+        }
+
+        // Réinitialiser les champs
+        $this->fields = null;
+        
+        return $old_prefix;
+    }
+
+    public function tables( $with_prefix = true ) {
+        $tables = $this->tables;
+
+        if ( $with_prefix ) {
+            $prefix   = $this->prefix;
+            foreach ( $tables as $k => $table ) {
+                $tables[ $table ] = $prefix . $table;
+                unset( $tables[ $k ] );
+            }
+        }
+
+        return $tables;
+    }
+
+    public function fields(){
+        // Calculer que si c'est non initialisé
+        if (!isset($this->fields)) {
+            $tables = $this->tables();
+            $default_values = 
+                array(
+                    'autoinc' => false,
+                    'key' => false,
+                    'type' => 'string',
+                    'mandatory' => true,
+                    'in_select' => true,
+                    'caption' => false,
+                    'update' => true,
+                    );
+                    
+            foreach($this->init_fields as $t => $cols)
+            {
+                foreach($cols as $col => $values) {
+                    // On utilise le nom de la vrai table comme key
+                    // On merge la valeur défaut
+                    $this->fields[$tables[$t]][$col] = array_merge($default_values, $values);
+                }
+            }
+        }
+        return $this->fields;
+    }
+
+}
