@@ -116,7 +116,7 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] || isset($_SESSION['ty
                     <form class="form-inline">
                         <div class="form-group">
                             <div class="card" style="width: 15rem">
-                                <img class="card-img-top" src="images/pl.WEBP" alt="Card image cap">
+                                <img class="card-img-top" src="images/pl.png" alt="Card image cap">
                                 <div class="card-body">
                                     <h5 class="card-title">Plug-in & Extension (à venir)</h5>
                                     <p class="card-text">Installer ou désinstaller les plug-in. </p>
