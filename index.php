@@ -1,5 +1,34 @@
 <?php 
+/** à faire : gerer les routes localement mais pas nécessaire si configuration apache
+ * 
+ */
 
+// require_once 'path/to/config.php';
+// require_once ALLOBOBO_ROOT . 'functions.php';
+
+// // Obtenir l'URI de la requête
+// $request = $_SERVER['REQUEST_URI'];
+
+// // Supprimer les paramètres de requête de l'URI (si présents)
+// $request = strtok($request, '?');
+
+// // Définir les routes disponibles
+// $routes = [
+//     '/' => 'home.php',
+//     '/medecin' => 'medecin.php',
+//     // Ajoutez d'autres routes ici
+// ];
+
+// // Vérifier si l'URI de la requête correspond à une route définie
+// if (array_key_exists($request, $routes)) {
+//     require __DIR__ . '/' . $routes[$request];
+// } else {
+//     // Si la route n'existe pas, renvoyer une erreur 404
+//     http_response_code(404);
+//     require __DIR__ . '/404.php';
+// }
+
+// fin du routage
 
 ?>
 <!DOCTYPE html>

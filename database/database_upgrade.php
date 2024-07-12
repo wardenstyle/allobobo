@@ -1,28 +1,4 @@
 <?php
-/**
- * fonction de connexion a la bdd
- */
-function get_pdo_connection() {
-
-    $dsn = 'mysql:host=localhost;dbname=dp-allobobo_bdd;charset=utf8';
-    $username = 'root';
-    $password = '';
-
-    try {
-
-        $pdo = new PDO($dsn, $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        return $pdo;
-
-    } catch (Exception $e) {
-
-        error_log('Erreur de connexion à la base de données: ' . $e->getMessage());
-        echo 'database_upgrade : Une erreur est survenue lors de la connexion à la base de données. Veuillez vérifier les journaux d\'erreurs pour plus de détails.';
-
-        return null;
-    }
-}
 
 function ab_bd_install() {
 
