@@ -1,43 +1,67 @@
 <?php 
 
-class AlloboboDatabase {
+class Database {
 
-    public $prefix = '';
+/**
+* fonction get_results
+* retourne le résultat des tables (similaire à la fonction Wordpress)
+*/
+function get_results($query,$output) {
 
-    // Attention à l'ordre des tables à cause des contraintes, classer dans l'ordre pour la suppression des tables
-    // Prendre l'ordre inverser de la création des contraintes
+    global $ab_db;
+
+    $pdo = get_pdo_connection();
+    if ($pdo === null) {
+        return;
+    }
+
+    try {
+
+        $stmt = $pdo->query($query);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+
+    } catch (Exception $e) {
+
+        error_log('Erreur dans database: ' . $e->getMessage());
+        echo 'Une erreur est survenue lors de la lecture des données. Veuillez vérifier les journaux d\'erreurs pour plus de détails.';
+    }
+}
+
+public $prefix = '';
+
+// Attention à l'ordre des tables à cause des contraintes, classer dans l'ordre pour la suppression des tables
+// Prendre l'ordre inverser de la création des contraintes
     
-    public $tables = array(	
+public $tables = array(	
 
-        'rdv',		
-        'user',
-        'medecin',
-        'service_status',
+    'rdv',		
+    'user',
+    'medecin',
+    'service_status',
 
-    );
+);
 
-    // Les champs
-    private $init_fields;
-    private $fields;
+// Les champs
+private $init_fields;
+private $fields;
 
-    // Les noms des tables
-    public $rdv;
-    public $user; 
-    public $medecin; 
-    public $service_status;
+// Les noms des tables
+public $rdv;
+public $user; 
+public $medecin; 
+public $service_status;
 
-
-    public function __construct( ) {
-        // prefixe desactive temporairement
+public function __construct( ) {
+    // prefixe desactive temporairement
     //    $this->set_prefix("ab_");
     $this->set_prefix("");
         require_once( 'database_fields.php' );
-    }
+}
 
 /**
  * met à jour les tables en fonction du nouveau prefixe
  */
-    public function set_prefix($prefix) {
+public function set_prefix($prefix) {
         //if (preg_match('|[^a-z0-9_]|i', $prefix)) {
         //    throw new InvalidArgumentException('Le préfixe doit être une chaîne de caractères valide.');
         //}
@@ -53,9 +77,9 @@ class AlloboboDatabase {
         $this->fields = null;
         
         return $old_prefix;
-    }
+}
 
-    public function tables( $with_prefix = true ) {
+public function tables( $with_prefix = true ) {
         $tables = $this->tables;
 
         if ( $with_prefix ) {
@@ -67,9 +91,9 @@ class AlloboboDatabase {
         }
 
         return $tables;
-    }
+}
 
-    public function fields(){
+public function fields(){
         // Calculer que si c'est non initialisé
         if (!isset($this->fields)) {
             $tables = $this->tables();

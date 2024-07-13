@@ -3,28 +3,12 @@
 /**
  * Initialisation de la base de donnée et création des tables
  */
-
+require_once ('config.php');
+require_once ALLOBOBO_DB; //fonction PDO
 require_once 'database_load.php'; // Chargement de la base
 
 $charset = 'utf8mb4';
 $collate = 'utf8mb4_unicode_ci';
-
-function get_pdo_connection_1() {
-    $dsn = 'mysql:host=localhost'; // Serveur MySQL (sans le nom de la base de données)
-    $username = 'root';
-    $password = '';
-
-    try {
-        // Connexion au serveur MySQL
-        $pdo = new PDO($dsn, $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $pdo;
-    } catch (Exception $e) {
-        error_log('Erreur de connexion à la base de données: ' . $e->getMessage());
-        echo 'Une erreur est survenue lors de la connexion à la base de données. Veuillez vérifier les journaux d\'erreurs pour plus de détails.';
-        return null;
-    }
-}
 
 function check_and_run_install() {
     // Vérifier si le fichier de verrouillage existe
@@ -52,7 +36,7 @@ function check_and_run_install() {
         $pdo->exec("USE `dp-allobobo_bdd`");
 
         // Liste des tables à vérifier
-        $tables = ['rendez_vous', 'utilisateur', 'medecin', 'service_status'];
+        $tables = ['rdv', 'user', 'medecin', 'service_status'];
         $tables_exist = true;
 
         foreach ($tables as $table) {
