@@ -87,7 +87,7 @@ try {
           </div>
         </div>
       <?php }
-    } ?>  
+    } else { echo '<i style="color:white">Le personnel est en cours de recrutement</i>';} ?>  
       </div>                       
     </div>
   </section>
