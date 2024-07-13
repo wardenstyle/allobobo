@@ -1,10 +1,8 @@
 <?php 
-/** à faire : gerer les routes localement mais pas nécessaire si configuration apache
- * 
- */
 
-// require_once 'path/to/config.php';
-// require_once ALLOBOBO_ROOT . 'functions.php';
+/** à faire : gerer les routes localement mais pas nécessaire si configuration apache
+ * Les routes
+ */
 
 // // Obtenir l'URI de la requête
 // $request = $_SERVER['REQUEST_URI'];

@@ -8,6 +8,7 @@
  * Html : formulaire
  * Dernière modification 22/05/2024
  */
+
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
@@ -16,8 +17,16 @@ $compte_admin = "(compte admin requis)"; //ajouter un médecin selon le profil
 
 try {
 
-  include('allobobo_bdd.php');
-  $requete = $bdd->query("SELECT * FROM medecin ");
+  require_once 'database/database_load.php';
+
+  // Récupérer les données
+  $medecins = (new ObjectMedecin())->get_lines(
+
+    array(
+        'select_fields' => array('nom_medecin', 'email_medecin', 'specialite', 'image'
+        )
+
+  ));
 
 } catch (PDOException $e) {
   error_log("Erreur lors de la vérification des médecins : " . $e->getMessage());
@@ -58,24 +67,27 @@ try {
             </p>
       </div>                             
       <div class="row">
-      <?php while( $row=$requete->fetch(PDO::FETCH_ASSOC)){ ?>
+      <?php 
+      if($medecins) {
+              foreach ( $medecins as $medecin){ ?>
         <div class="col-sm-6 col-lg-4 mx-auto">
           <div class="box">
             <div class="img-box">
-              <img src="<?php echo $row['image'];?>" alt="">
+              <img src="<?php echo $medecin->image;?>" alt="">
             </div>
             <div class="detail-box">
               <div class="social_box">
-                <?php echo "<a href='mailto:allobobo@allobobo.fr'>".$row['email_medecin']."</a>" ?>
+                <?php echo "<a href='mailto:allobobo@allobobo.fr'>".$medecin->email_medecin."</a>" ?>
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                                         
               </div>
-              <h5><?php echo $row['nom_medecin'];?></h5>
-              <h6 class=""><?php echo $row['specialite'];?></h6>
+              <h5><?php echo $medecin->nom_medecin;?></h5>
+              <h6 class=""><?php echo $medecin->specialite;?></h6>
             </div>
           </div>
         </div>
-      <?php } ?>  
+      <?php }
+    } ?>  
       </div>                       
     </div>
   </section>

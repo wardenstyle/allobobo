@@ -4,7 +4,7 @@
  * Initialisation de la base de donnée et création des tables
  */
 require_once ('config.php');
-require_once ALLOBOBO_DB;
+require_once ALLOBOBO_DB; //fonction PDO
 require_once 'database_load.php'; // Chargement de la base
 
 $charset = 'utf8mb4';

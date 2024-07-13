@@ -3,7 +3,10 @@
 function require_ab_db() {
 	global $ab_db;
 
-	require_once( 'Database.php' );
+	require_once 'config/config.php'; // les constantes
+	require_once 'Database.php'; // la base de donnees
+	require_once 'database/DatabaseObject.php'; //entity manager
+	require_once 'PDOconnect.php'; //PDO connect
 
 	if ( isset( $ab_db ) ) {
 		return;

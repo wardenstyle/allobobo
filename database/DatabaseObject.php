@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Entity manager (em) fait maison 
+ */
 // Définitions des constantes
 if (!defined('OBJECT')) {
     define('OBJECT', 'OBJECT');
@@ -152,6 +154,33 @@ class ObjectUser extends DatabaseTableObject
     {
         global $ab_db;
         return $ab_db->user;
+    }
+}
+
+class ObjectRdv extends DatabaseTableObject
+{
+    protected static function get_table()
+    {
+        global $ab_db;
+        return $ab_db->rdv;
+    }
+}
+
+class ObjectMedecin extends DatabaseTableObject
+{
+    protected static function get_table()
+    {
+        global $ab_db;
+        return $ab_db->medecin;
+    }
+}
+
+class ObjectService extends DatabaseTableObject
+{
+    protected static function get_table()
+    {
+        global $ab_db;
+        return $ab_db->service_status;
     }
 }
 ?>

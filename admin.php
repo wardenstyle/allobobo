@@ -4,7 +4,9 @@ require_once 'config/config.php';
 require_once 'database/init.php';
 require_once 'database/database_upgrade.php'; //inclus les fonctions installation et de desinstallation
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Vérification du mot de passe
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['password'])) {
@@ -130,8 +132,7 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] || isset($_SESSION['ty
             </div>
                 <a class="btn btn-outline-dark mt-3" style="color: white;" href="?logout=true">Quitter</a>
                 <?php
-                    require_once 'database/DatabaseObject.php';
-                    global $ab_db; 
+                    
                     $sql = "SELECT * FROM user";
                     $user = (new DatabaseObject($sql))->get_lines();
                     var_dump($user);
