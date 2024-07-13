@@ -32,7 +32,7 @@ function get_pdo_connection() {
 }
 
 /**
- * Cette fonction permettra de contrôler si la base exite ou non
+ * Cette fonction permettra de contrôler si la base existe ou non
  */
 function get_pdo_connection_1() {
 

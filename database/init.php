@@ -36,7 +36,7 @@ function check_and_run_install() {
         $pdo->exec("USE `dp-allobobo_bdd`");
 
         // Liste des tables à vérifier
-        $tables = ['rendez_vous', 'utilisateur', 'medecin', 'service_status'];
+        $tables = ['rdv', 'user', 'medecin', 'service_status'];
         $tables_exist = true;
 
         foreach ($tables as $table) {

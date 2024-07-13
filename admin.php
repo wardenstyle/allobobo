@@ -129,6 +129,20 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] || isset($_SESSION['ty
                     </form>
             </div>
                 <a class="btn btn-outline-dark mt-3" style="color: white;" href="?logout=true">Quitter</a>
+                <?php
+                    require_once 'database/DatabaseObject.php';
+                    global $ab_db; 
+                    $sql = "SELECT * FROM user";
+                    $user = (new DatabaseObject($sql))->get_lines();
+                    var_dump($user);
+
+                    $list_user = (new ObjectUser())->get_lines(
+                        array(
+                            'select_fields' => 
+                                array('nom_user')
+                            ));
+                    var_dump($list_user);
+                ?>
 
             <?php else : ?>
                 <h1>Accès restreint <img src="images/R.png" width="50%" height="50%"/></h1>
