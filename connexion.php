@@ -63,75 +63,78 @@ if (isset($_POST['submit'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
-    <?php include('header.php') ?>
-    <style>
-        h4,label,button { color: white; font-family: 'Roboto'; }
-        .erreur_text { color: white; font-family: 'Roboto';text-align:center; }
-        #form {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            border: solid;
-            color: white;
-            padding: 10px;
-            text-align: justify;
-        }
-        .generate-form {color: white; padding: 10px;}
+<?php 
 
-    </style>
+echo "<html><head>";
+include('header.php');
 
-    <body>
-        <div class="hero_area">
-            <div class="hero_bg_box">
-                <img src="images/hero-bg-sas.png" alt="">
-            </div>
-            <!-- navigation section -->
-            <?php 
+echo 
+"<style>
+h4, label, button, .erreur_text, #title_cp {
+                color: white;
+                font-family: 'Roboto', sans-serif;
+                text-align: center;
+            }
+            #form {
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                border: solid;
+                color: white;
+                padding: 10px;
+                text-align: justify;
+            }
+            .generate-form {
+                color: white;
+                padding: 10px;
+            }
 
-            include('navigation.php');      
-            $html_gen->add_begin_div(array('class_name'=>'container mt-5'));
-            $html_gen->add_begin_div(array('class_name'=>'row justify-content-center'));
-            $html_gen->add_begin_div(array('class_name'=>'col-md-8'));
-            $html_gen->add_begin_form(array('title' => 'Connectez-vous' , "method" => 'post' , "action" => 'connexion.php' ));
+</style></head>
+<body><div class='hero_area'><div class='hero_bg_box'><img src='images/hero-bg-sas.png' alt=''></div>";
+//navigation section
+include('navigation.php');
+
+$html_gen->add_begin_div(array('class_name'=>'container mt-5'));
+$html_gen->add_begin_div(array('class_name'=>'row justify-content-center'));
+$html_gen->add_begin_div(array('class_name'=>'col-md-8'));
+$html_gen->add_begin_form(array('title' => 'Connectez-vous' , "method" => 'post' , "action" => 'connexion.php' ));
             
-            $html_gen->add_begin_div(array('class_name'=>'form-group'));
-            $html_gen->add_input(array(
+$html_gen->add_begin_div(array('class_name'=>'form-group'));
+$html_gen->add_input(array(
                 'name' => 'email_user', 
                 'label' => "Adresse email: ", 
                 'placeholder' =>"admin@allobobo.fr" , 
                 "mandatory" => true ,
                 'label-align' => 'left'
-            ));
-            $html_gen->add_end_div(array());
-            $html_gen->add_begin_div(array('class_name'=>'form-group'));
-            $html_gen->add_input(array(
+));
+
+$html_gen->add_end_div(array());
+$html_gen->add_begin_div(array('class_name'=>'form-group'));
+$html_gen->add_input(array(
                 'name' => 'mdp', 
                 'label' => "Mot de passe: ",
                 'type'=>'password', 
                 'placeholder' =>"admin" , 
                 "mandatory" => true ,
                 'label-align' => 'left'
-            ));
-            $html_gen->add_end_div(array());
-            $html_gen->add_button(array('class'=>'btn btn-outline-dark','type'=>'submit','name'=>'submit','style'=>'color:white','value' =>'se connecter'));
-            $html_gen->add_end_form(array());
-            $html_gen->add_end_div(array());
-            $html_gen->add_end_div(array());
-            $html_gen->add_end_div(array()); 
-            $html_gen->auto_div = false;
-            $html_gen->generate();
-            echo "<center><h4>Vous n'avez pas de compte ? <a class='btn btn-dark' href='inscription.php'>s'inscrire</a></h4></center>";
-            if(isset($erreur_pass)) echo '<p class="erreur_text">' . $erreur_pass . '</p>';
-            if(isset($erreur_mdp)) echo '<p class="erreur_text">' . $erreur_mdp . '</p>';
-            if(isset($erreur1)) echo '<p class="erreur_text">' . $erreur1 . '</p>';
-            ?>
-        </div>
-    </body>
-</html>
+));
 
-<!-- jQery & js scripts section -->
-	  <?php include('mes_script.php')?>
-<!-- jQery & js scripts section--> 
+$html_gen->add_end_div(array());
+$html_gen->add_button(array('class'=>'btn btn-outline-dark','type'=>'submit','name'=>'submit','style'=>'color:white','value' =>'se connecter'));
+$html_gen->add_end_form(array());
+$html_gen->add_end_div(array());
+$html_gen->add_end_div(array());
+$html_gen->add_end_div(array()); 
+$html_gen->auto_div = false;
+$html_gen->generate();
 
-				
+echo "<p id='title_cp'>Vous n'avez pas de compte ? <a class='btn btn-dark' href='inscription.php'>s'inscrire</a></p>";
+
+if(isset($erreur_pass)) echo '<p class="erreur_text">' . $erreur_pass . '</p>';
+if(isset($erreur_mdp)) echo '<p class="erreur_text">' . $erreur_mdp . '</p>';
+if(isset($erreur1)) echo '<p class="erreur_text">' . $erreur1 . '</p>';
+
+echo "</div></body></html>";
+// jQery & js scripts section
+include('mes_script.php');
+?>
