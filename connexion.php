@@ -13,6 +13,9 @@ if (isset($_SESSION['email_user'])) {
     exit(); // Arret du script après la redirection
 }
 
+$email_user = $mdp = "";
+$erreur_pass = $erreur_mdp = $erreur1 = "";
+
 if (isset($_POST['submit'])) {
     $validation = true;
     $email_user = trim($_POST['email_user']);
@@ -60,36 +63,12 @@ if (isset($_POST['submit'])) {
         }
     }
 }
-?>
 
-<!DOCTYPE html>
-<?php 
-
-echo "<html><head>";
-include('header.php');
+echo "<!DOCTYPE html><html><head>";
+include('header.php'); //head
 
 echo 
-"<style>
-h4, label, button, .erreur_text, #title_cp {
-                color: white;
-                font-family: 'Roboto', sans-serif;
-                text-align: center;
-            }
-            #form {
-                display: flex;
-                flex-direction: column;
-                align-items: start;
-                border: solid;
-                color: white;
-                padding: 10px;
-                text-align: justify;
-            }
-            .generate-form {
-                color: white;
-                padding: 10px;
-            }
-
-</style></head>
+"<link href='css/connexion.css' rel='stylesheet'></head>
 <body><div class='hero_area'><div class='hero_bg_box'><img src='images/hero-bg-sas.png' alt=''></div>";
 //navigation section
 include('navigation.php');
@@ -105,7 +84,8 @@ $html_gen->add_input(array(
                 'label' => "Adresse email: ", 
                 'placeholder' =>"admin@allobobo.fr" , 
                 "mandatory" => true ,
-                'label-align' => 'left'
+                'label-align' => 'left',
+                'value' => htmlspecialchars($email_user) // Préserve la valeur saisie
 ));
 
 $html_gen->add_end_div(array());
@@ -116,7 +96,8 @@ $html_gen->add_input(array(
                 'type'=>'password', 
                 'placeholder' =>"admin" , 
                 "mandatory" => true ,
-                'label-align' => 'left'
+                'label-align' => 'left',
+                'value' => htmlspecialchars($mdp) // Préserve la valeur saisie
 ));
 
 $html_gen->add_end_div(array());

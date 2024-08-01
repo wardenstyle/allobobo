@@ -150,10 +150,11 @@ class HtmlGenerator {
     function add_begin_div($atts, $add_flush_html = true){
 		$a = $this->shortcode_atts( array(
 			'class_name' => 'name',
+			'id' =>'id_div',
  			'newline' =>  $this->auto_newline,
 			), $atts );
 
-        $r = "<div class='{$a['class_name']}'>";
+        $r = "<div id='{$a['id']}' class='{$a['class_name']}'>";
 		
  		if ($a['newline']) $r .= '<br>';
 		
@@ -233,12 +234,14 @@ class HtmlGenerator {
 			'name' => 'ab_input',
 			'label' => null,
 			'type' => 'text',
-			'value' => null,
+			'value' => '',
 			'mandatory' => false,
 			'newline' =>  $this->auto_newline,
 			'div' => $this->auto_div,
 			'placeholder' => null,
 			'label-align' => 'left',
+			'onchange' => null,
+			'onkeyup' => null,
 			), $atts );
 
 		$r = "";
@@ -250,7 +253,7 @@ class HtmlGenerator {
 		if ($a['mandatory'])
 		{
 			$r_label .= '<span style="color:orange;"> *</span>';
-			$r2 = " required";
+			$r2 = " required ";
 		}
 		$r_label .=  '</label>'.$this->char_rl;
 		 
@@ -259,16 +262,25 @@ class HtmlGenerator {
 			$r .= $r_label;
 		}
 
-		$r .= '<input class="form-control" id="add_'.$a["name"].'" type="'.$a["type"].'" name="'.$a["name"].'" value="'.$a["value"].'"';
+		$r .= '<input class="form-control" id="'.$a["name"].'" type="'.$a["type"].'" name="'.$a["name"].'" value="'.$a["value"].'"';
 
 		if (isset($a['placeholder']))
 		{
 			$r .= ' placeholder ="'.$a['placeholder'].'"';
 		}
 
+		if($a['onchange'])
+		{
+			$r .= 'onchange="'.$a['onchange'].'"';
+		}
+
+		if($a['onkeyup'])
+		{
+			$r .= 'onkeyup="'.$a['onkeyup'].'"';
+		}
 		if ($a['mandatory'])
 		{
-			$r .= " required";
+			$r .= " required ";
 		}
 
 		$r .= '>';
@@ -283,7 +295,7 @@ class HtmlGenerator {
 		// Retour chariot pour meilleure lecture html
 		$r .= $this->char_rl;
 
-		if ($a['div']) $r .= $this->add_end_div(array(), false);
+		//if ($a['div']) $r .= $this->add_end_div(array(), false);
 
 		// on concaténe pour le flush
 		if ($add_flush_html) $this->html .= $r;
@@ -321,5 +333,6 @@ class HtmlGenerator {
 		
 		return $r;
 	}
+
 }
 ?>
