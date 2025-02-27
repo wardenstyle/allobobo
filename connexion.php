@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once 'database/database_load.php';
+$html_gen =  new HtmlGenerator();
 
 // Vérifiez si l'utilisateur est déjà connecté
 if (isset($_SESSION['email_user'])) {
@@ -10,6 +12,9 @@ if (isset($_SESSION['email_user'])) {
     }
     exit(); // Arret du script après la redirection
 }
+
+$email_user = $mdp = "";
+$erreur_pass = $erreur_mdp = $erreur1 = "";
 
 if (isset($_POST['submit'])) {
     $validation = true;
@@ -58,63 +63,59 @@ if (isset($_POST['submit'])) {
         }
     }
 }
+
+echo "<!DOCTYPE html><html><head>";
+include('header.php'); //head
+
+echo 
+"<link href='css/connexion.css' rel='stylesheet'></head>
+<body><div class='hero_area'><div class='hero_bg_box'><img src='images/hero-bg-sas.png' alt=''></div>";
+//navigation section
+include('navigation.php');
+
+$html_gen->add_begin_div(array('class_name'=>'container mt-5'));
+$html_gen->add_begin_div(array('class_name'=>'row justify-content-center'));
+$html_gen->add_begin_div(array('class_name'=>'col-md-8'));
+$html_gen->add_begin_form(array('title' => 'Connectez-vous' , "method" => 'post' , "action" => 'connexion.php' ));
+            
+$html_gen->add_begin_div(array('class_name'=>'form-group'));
+$html_gen->add_input(array(
+                'name' => 'email_user', 
+                'label' => "Adresse email: ", 
+                'placeholder' =>"admin@allobobo.fr" , 
+                "mandatory" => true ,
+                'label-align' => 'left',
+                'value' => htmlspecialchars($email_user) // Préserve la valeur saisie
+));
+
+$html_gen->add_end_div(array());
+$html_gen->add_begin_div(array('class_name'=>'form-group'));
+$html_gen->add_input(array(
+                'name' => 'mdp', 
+                'label' => "Mot de passe: ",
+                'type'=>'password', 
+                'placeholder' =>"admin" , 
+                "mandatory" => true ,
+                'label-align' => 'left',
+                'value' => htmlspecialchars($mdp) // Préserve la valeur saisie
+));
+
+$html_gen->add_end_div(array());
+$html_gen->add_button(array('class'=>'btn btn-outline-dark','type'=>'submit','name'=>'submit','style'=>'color:white','value' =>'se connecter'));
+$html_gen->add_end_form(array());
+$html_gen->add_end_div(array());
+$html_gen->add_end_div(array());
+$html_gen->add_end_div(array()); 
+$html_gen->auto_div = false;
+$html_gen->generate();
+
+echo "<p id='title_cp'>Vous n'avez pas de compte ? <a class='btn btn-dark' href='inscription.php'>s'inscrire</a></p>";
+
+if(isset($erreur_pass)) echo '<p class="erreur_text">' . $erreur_pass . '</p>';
+if(isset($erreur_mdp)) echo '<p class="erreur_text">' . $erreur_mdp . '</p>';
+if(isset($erreur1)) echo '<p class="erreur_text">' . $erreur1 . '</p>';
+
+echo "</div></body></html>";
+// jQery & js scripts section
+include('mes_script.php');
 ?>
-
-<!DOCTYPE html>
-<html>
-    <?php include('header.php') ?>
-    <style>
-        h4 { color: white; font-family: 'Roboto'; }
-        .erreur_text { color: white; font-family: 'Roboto'; }
-        #form {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            border: solid;
-            color: white;
-            padding: 10px;
-            text-align: justify;
-        }
-    </style>
-
-    <body>
-        <div class="hero_area">
-            <div class="hero_bg_box">
-                <img src="images/hero-bg-sas.png" alt="">
-            </div>
-            <!-- navigation section -->
-            <?php include('navigation.php') ?>
-            <!-- navigation section -->
-
-            <div class="container mt-5">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <form method="post" action="connexion.php" class="" style="border: solid; color: white; padding: 10px;">
-                            <div class="form-group">
-                                <label id="label_mail" for="email" style="color: white; font-family: Roboto;">Adresse mail:</label>
-                                <input type="email" name="email_user" class="form-control" placeholder="admin : admin@allobobo.fr" id="email" value="<?php if(isset($email_user)) echo $email_user; ?>"><br />
-                            </div>
-                            <div class="form-group">
-                                <label id="label_mdp" for="password" style="color: white; font-family: Roboto;">Mot de passe:</label>
-                                <input type="password" class="form-control" placeholder="mot de passe : admin" name="mdp" id="mdp"><br />
-                            </div>
-                            <button class="btn btn-outline-dark" style="color: white;" type="submit" name="submit">Se connecter</button>
-                        </form>
-                        <br />
-                        <h4>Vous n'avez pas de compte ? <a class="btn btn-dark" href="inscription.php">s'inscrire</a></h4>
-                        <br />
-                        <?php if(isset($erreur_pass)) echo '<p class="erreur_text">' . $erreur_pass . '</p>'; ?>
-                        <?php if(isset($erreur_mdp)) echo '<p class="erreur_text">' . $erreur_mdp . '</p>'; ?>
-                        <?php if(isset($erreur1)) echo '<p class="erreur_text">' . $erreur1 . '</p>'; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
-
-<!-- jQery & js scripts section -->
-	  <?php include('mes_script.php') ?>
-<!-- jQery & js scripts section--> 
-
-				

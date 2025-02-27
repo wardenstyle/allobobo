@@ -8,7 +8,18 @@
  * 
  * @todo encrypter le mot de passe ligne 64
  */
+/**
+ * inclusion des outils
+ */
+require_once 'database/database_load.php';
+$html_gen =  new HtmlGenerator();
 
+/** Initialisation des variables */
+$connexion = false;
+$nom = $email = $password = "";
+$erreur_pass = $erreur_nom = $erreur_email = $erreur_repeat = $erreur = "";
+
+/** Traitement des saisies */
 if(isset($_POST['submit'])){
 
 	$validation = true;
@@ -62,7 +73,6 @@ if(isset($_POST['submit'])){
         header('Location: erreur.php');
         exit();
     }	
-
 	
 	if($validation){
 		$password = md5($password);
@@ -89,97 +99,111 @@ if(isset($_POST['submit'])){
 			
 }
 
-?><!DOCTYPE html>
-<html>
-	<?php include('header.php') ?>
+echo "<!DOCTYPE html><html><head>";
+include('header.php'); //head
 
-	<style>
-        h3 {
-            color: white;
-            font-family: 'Roboto';
-        }
-        table {
-            color: white;
-        }
-        .erreur_text {
-            color: white;
-            font-family: 'Roboto';
-        }
-        #form {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            border: solid;
-            color: white;
-            padding: 10px;
-            text-align: justify;
-        }
-        .custom-width {
-            width: 150%;
-        }
-    </style>
-</head>
-<body>
-    <div class="hero_area">
-        <div class="hero_bg_box">
-            <img src="images/hero-bg.png" alt="">
-        </div>
+echo 
+"<link href='css/inscription.css' rel='stylesheet'></head>
+<body><div class='hero_area'><div class='hero_bg_box'><img src='images/hero-bg.png' alt=''></div>";
+//navigation section
+include('navigation.php');
 
-        <!-- navigation section  -->
-        <?php include('navigation.php') ?>
-        <!-- navigation section -->
 
-        <?php if ((isset($validation)) && ($validation == true)) { ?>
-            <center>
-                <h3>Votre compte a été créé !</h3><br/>
-                <a class="btn btn-primary" href="connexion.php" id="lien_retour">Se connecter</a>
-            </center>
-        <?php } else { ?> 
-            <div class="container mt-5">
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <form id="form" method="post" action="inscription.php">
-                            <div class="form-group">
-                                <label for="nom" style="color:white; font-weight:bold">Nom:</label>
-                                <input type="text" name="nom" class="form-control custom-width" id="nom" value="<?php if (isset($nom)) echo $nom; ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="email" style="color:white; font-weight:bold">Adresse mail:</label>
-                                <input type="email" name="email" id="email" class="form-control custom-width" value="<?php if (isset($email)) echo $email; ?>" onchange="verifier_email()" onkeyup="verifier_email()">                               
-                            </div>
-                            <div id="resultat" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div>
-                            <div class="form-group">
-                                <label for="password" style="color:white; font-weight:bold">Mot de passe:</label>
-                                <input type="password" name="password" id="password" class="form-control custom-width" value="<?php if (isset($password)) echo $password; ?>" onchange="verifier_mdp()" onkeyup="verifier_mdp()">
-                            </div>
-                            <div class="form-group">
-                                <label for="repeatpassword" style="color:white; font-weight:bold">Confirmation mot de passe:</label>
-                                <input type="password" name="repeatpassword" id="repeatpassword" class="form-control custom-width" value="<?php if (isset($password)) echo $password; ?>" onchange="verifier_mdp()" onkeyup="verifier_mdp()">
-                            </div>
-                            <div id="resultat2" style="display:inline;background-color:#942003;color:white; font-family:Arial;"></div>
-                            <input id="reserver" type="submit" class="btn btn-primary" name="submit" value="Validez">
-                        </form>
+if ((isset($validation)) && ($validation == true)) { 
+            
+    $html_gen->add_title(array('title'=>'Votre compte a été créé, vous pouvez vous connectez.','level'=>'3','class'=>'title_cp'));
+    $connexion = true;
+            
+} else { 
+ 
+    $html_gen->add_begin_div(array('class_name'=>'container mt-5'));
+    $html_gen->add_begin_div(array('row justify-content-center'));
+    $html_gen->add_begin_div(array('col-md-8'));
 
-                        <?php 
-                            if (isset($erreur_pass)) echo '<p class="erreur_text">' . $erreur_pass . '</p>';
-                            if (isset($erreur_nom)) echo '<p class="erreur_text">' . $erreur_nom . '</p>';
-                            if (isset($erreur_email)) echo '<p class="erreur_text">' . $erreur_email . '</p>';
-                            if (isset($erreur_repeat)) echo '<p class="erreur_text">' . $erreur_repeat . '</p>';
-                            if (isset($erreur)) echo '<p class="erreur_text">' . $erreur . '</p>'; 
-                        ?>
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
-    </div>
+    $html_gen->add_begin_form(array('title' => 'Inscrivez-vous' , "method" => 'post' , "action" => 'inscription.php' ));
+    $html_gen->add_begin_div(array('class_name'=>'form-group'));
+    $html_gen->add_input(array(
+                'name' => 'nom', 
+                'label' => "Nom: ",
+                'type'=>'text', 
+                'placeholder' =>"" , 
+                "mandatory" => true ,
+                'label-align' => 'left',
+                'value' => htmlspecialchars($nom) // Préserve la valeur saisie
+    ));
+    $html_gen->add_end_div(array());
 
-    <!-- Lien vers le JS de Bootstrap et ses dépendances -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+    $html_gen->add_begin_div(array('class_name'=>'form-group'));
+    $html_gen->add_input(array(
+        'name' => 'email', 
+        'label' => "Adresse email: ",
+        'type'=>'text', 
+        'placeholder' =>"" , 
+        "mandatory" => true ,
+        'newline' =>false,
+        'label-align' => 'left',
+        'value' => htmlspecialchars($email), // Préserve la valeur saisie
+        'onchange' => 'verifier_email()',
+        'onkeyup' => 'verifier_email()',
+    ));
+    $html_gen->add_end_div(array());
+    $html_gen->add_begin_div(array('id'=>'resultat'));
+    $html_gen->add_end_div(array());
 
-	<script type="text/javascript" src="monajax.js"></script>
-					
-</html>
+    $html_gen->add_begin_div(array('class_name'=>'form-group'));
+    $html_gen->add_input(array(
+        'name' => 'password', 
+        'label' => "Mot de passe: ",
+        'type'=>'password', 
+        'placeholder' =>"" , 
+        "mandatory" => true ,
+        'label-align' => 'left',
+        'value' => htmlspecialchars($password), // Préserve la valeur saisie
+        'onchange' => 'verifier_mdp()',
+        'onkeyup' => 'verifier_mdp()',
+    ));
+    $html_gen->add_end_div(array());
+
+    $html_gen->add_begin_div(array('class_name'=>'form-group'));
+    $html_gen->add_input(array(
+        'name' => 'repeatpassword', 
+        'label' => "Confirmation du mot de passe: ",
+        'type'=>'password', 
+        'placeholder' =>"" , 
+        "mandatory" => true ,
+        'label-align' => 'left',
+        'value' => htmlspecialchars($password),
+        'onchange' => 'verifier_mdp()',
+        'onkeyup' => 'verifier_mdp()',
+    ));
+    $html_gen->add_end_div(array());
+
+    $html_gen->add_begin_div(array('id'=>'resultat2'));
+    $html_gen->add_end_div(array());
+    $html_gen->add_button(array('class'=>'btn btn-primary','type'=>'submit','name'=>'submit','style'=>'color:white','value' =>'Validez'));
+    $html_gen->add_end_form(array());
+    
+    $html_gen->add_end_div(array());
+    $html_gen->add_end_div(array());
+    $html_gen->add_end_div(array());
+
+    } 
+
+    $html_gen->auto_div = false;
+    $html_gen->generate();
+
+    if (isset($erreur_pass)) echo "<p class='erreur_text'>" . $erreur_pass . "</p>";
+    if (isset($erreur_nom)) echo '<p class="erreur_text">' . $erreur_nom . '</p>';
+    if (isset($erreur_email)) echo "<p class='erreur_text'>" . $erreur_email . "</p>";
+    if (isset($erreur_repeat)) echo '<p class="erreur_text">' . $erreur_repeat . '</p>';
+    if (isset($erreur)) echo '<p class="erreur_text">' . $erreur . '</p>'; 
+    if($connexion) echo "<center><a class='btn btn-primary' href='connexion.php' id='lien_retour'>Se connecter</a></center>";
+    
+
+    echo "</div></body>
+    <script src='https://code.jquery.com/jquery-3.5.1.slim.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'></script>
+    <script type='text/javascript' src='monajax.js'></script>
+    </html>"; // Lien vers le JS de Bootstrap et ses dépendances 
+?>

@@ -1,0 +1,34 @@
+/**
+CSS de la page inscription
+*/
+h3,h2,form,label,button {
+    color: white;
+    font-family: 'Roboto',sans-serif;
+}
+table {
+    color: white;
+}
+.erreur_text {
+    color: white;
+    font-family: 'Roboto';
+}
+#form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    border: solid;
+    color: white;
+    padding: 10px;
+    text-align: justify;
+
+}
+.custom-width {
+    width: 150%;
+}
+.title_cp {
+    text-align: center;
+}
+#resultat, .erreur_text {
+
+    display:inline;background-color:#942003;color:white; font-family:Arial;
+}

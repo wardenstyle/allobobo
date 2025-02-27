@@ -95,7 +95,6 @@ function verifier_email()
         a.send("email="+email);    
     }  
     
-
 }
 
 function verifier_mdp()

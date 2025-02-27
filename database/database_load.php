@@ -14,5 +14,7 @@ function require_ab_db() {
 
 	$ab_db = new Database();
 }
+require_once 'config.php'; // les constantes
+require_once( ALLOBOBO_GEN ); // HtmlGenerator
 // A mettre dans init mais pas nécessaire car la partie est déjà initiée
 require_ab_db();
